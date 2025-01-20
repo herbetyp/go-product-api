@@ -1,8 +1,9 @@
 package main
 
 import (
-	"github.com/herbetyp/go-product-api/internal/server"
 	config "github.com/herbetyp/go-product-api/internal/configs"
+	"github.com/herbetyp/go-product-api/internal/database"
+	"github.com/herbetyp/go-product-api/internal/server"
 )
 
 func main() {
@@ -10,7 +11,7 @@ func main() {
 	config.InitConfig()
 
 	// Connecting on Database
-	// database.StartDatabase()
+	database.StartDatabase()
 
 	// Starting Server
 	runServer := server.RunServer()
