@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"log"
 
-	"gorm.io/gorm"
-	"gorm.io/driver/postgres"
 	config "github.com/herbetyp/go-product-api/internal/configs"
+	"gorm.io/driver/postgres"
+	"gorm.io/gorm"
 )
 
 var db *gorm.DB
@@ -20,7 +20,7 @@ func StartDatabase() {
 	database, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 
 	if err != nil {
-		log.Print("Could not connect to the Postgres database", err)
+		log.Print("Could not connect to database", err)
 	}
 
 	db = database
@@ -34,7 +34,7 @@ func StartDatabase() {
 	config.SetMaxOpenConns(DBConf.SetMaxOpenConns)
 	config.SetConnMaxLifetime(DBConf.SetConnMaxLifetime)
 
-	log.Print("Connected to the Postgres database: ", DBConf.Port)
+	log.Print("Connected to database on port: ", DBConf.Port)
 }
 
 func GetDatabase() *gorm.DB {
