@@ -16,6 +16,5 @@ func Get(email string) (model.User, error) {
 
 	err := db.Model(u).Where("email = ?", email).Find(&u).First(&u).Error
 
-	u = *model.FilterResponse(u)
 	return u, err
 }
