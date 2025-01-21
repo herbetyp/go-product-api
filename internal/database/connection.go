@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"log"
 
-	config "github.com/herbetyp/go-product-api/internal/configs"
+	config "github.com/herbetyp/go-product-api/configs"
 	"github.com/herbetyp/go-product-api/internal/database/migrations"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"

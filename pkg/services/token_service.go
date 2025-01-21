@@ -6,7 +6,7 @@ import (
 
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/google/uuid"
-	config "github.com/herbetyp/go-product-api/internal/configs"
+	config "github.com/herbetyp/go-product-api/configs"
 )
 
 func GetJwtClaims(tokenString string) (jwt.MapClaims, error) {

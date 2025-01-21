@@ -1,7 +1,7 @@
 package main
 
 import (
-	config "github.com/herbetyp/go-product-api/internal/configs"
+	config "github.com/herbetyp/go-product-api/configs"
 	"github.com/herbetyp/go-product-api/internal/database"
 	"github.com/herbetyp/go-product-api/internal/server"
 )

@@ -4,7 +4,7 @@ import (
 	"log"
 
 	"github.com/gin-gonic/gin"
-	config "github.com/herbetyp/go-product-api/internal/configs"
+	config "github.com/herbetyp/go-product-api/configs"
 	router "github.com/herbetyp/go-product-api/internal/server/routes"
 )
 

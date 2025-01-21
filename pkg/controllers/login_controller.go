@@ -5,7 +5,7 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	config "github.com/herbetyp/go-product-api/internal/configs"
+	config "github.com/herbetyp/go-product-api/configs"
 	model "github.com/herbetyp/go-product-api/internal/models/login"
 	handler "github.com/herbetyp/go-product-api/pkg/handlers"
 )
