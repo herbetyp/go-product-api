@@ -22,3 +22,12 @@ func NewUser(data models.UserDTO) (models.User, error) {
 	}
 	return u, nil
 }
+
+func GetUser(id string) (models.User, error) {
+	user, err := model.Get(id)
+	if err != nil {
+		return models.User{}, fmt.Errorf("cannot find user: %v", err)
+
+	}
+	return user, nil
+}

@@ -5,10 +5,12 @@ import (
 	model "github.com/herbetyp/go-product-api/internal/models"
 )
 
-func Create(u model.User) (model.User, error) {
+func Get(id string) (model.User, error) {
 	db := database.GetDatabase()
 
-	err := db.Model(u).Create(&u).Error
+	var u model.User
+
+	err := db.Model(u).Where("id = ?", id).First(&u).Error
 
 	u = *model.FilterResult(u)
 	return u, err

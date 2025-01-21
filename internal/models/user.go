@@ -42,7 +42,7 @@ func NewUserWithID(id string, username string, email string, passw string) *User
 	}
 }
 
-func FilterResponse(u User) *User {
+func FilterResult(u User) *User {
 	return &User{
 		ID:        u.ID,
 		Username:  u.Username,

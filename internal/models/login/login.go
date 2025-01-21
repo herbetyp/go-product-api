@@ -14,7 +14,7 @@ func Get(email string) (model.User, error) {
 
 	u.LastLogin = time.Now().Local()
 
-	err := db.Model(u).Where("email = ?", email).Find(&u).First(&u).Error
+	err := db.Model(u).Where("email = ?", email).First(&u).Error
 
 	return u, err
 }
