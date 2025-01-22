@@ -13,8 +13,12 @@ func ConfigRoutes(router *gin.Engine) *gin.Engine {
 	base_url.POST("oauth2/token", controllers.NewLogin)
 
 	users := base_url.Group("/users")
-	users.POST("", controllers.NewUser)
+	users.POST("", controllers.CreateUser)
+	users.GET("", controllers.GetUsers)
 	users.GET("/:user_id", controllers.GetUser)
+	users.PATCH("/:user_id", controllers.UpdateUser)
+	users.DELETE("/:user_id", controllers.DeleteUser)
+	users.POST("/:user_id/recovery", controllers.RecoveryUser)
 
 	return router
 }

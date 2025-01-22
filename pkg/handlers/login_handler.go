@@ -15,7 +15,7 @@ func NewLogin(data model.LoginDTO) (string, error) {
 		return "", fmt.Errorf("error on get user from database")
 	}
 
-	if user.Password != service.SHA512Encoder(data.Password) {
+	if user.Password != service.SHA512Crypto(data.Password) {
 		log.Print("invalid password")
 		return "", fmt.Errorf("invalid password")
 	}

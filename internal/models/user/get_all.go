@@ -5,11 +5,12 @@ import (
 	model "github.com/herbetyp/go-product-api/internal/models"
 )
 
-func Create(u model.User) (model.User, error) {
+func GetAll() ([]model.User, error) {
 	db := database.GetDatabase()
 
-	err := db.Model(&u).Create(&u).Error
+	var u []model.User
 
-	u = *model.FilterResult(u)
+	err := db.Model(&u).Omit("password").Find(&u).Error
+
 	return u, err
 }

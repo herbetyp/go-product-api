@@ -5,8 +5,8 @@ import (
 	"time"
 
 	"github.com/golang-jwt/jwt/v5"
-	"github.com/google/uuid"
 	config "github.com/herbetyp/go-product-api/configs"
+	utils "github.com/herbetyp/go-product-api/pkg/services/helpers"
 )
 
 func GetJwtClaims(tokenString string) (jwt.MapClaims, error) {
@@ -25,8 +25,8 @@ func GenerateToken(id string) (string, error) {
 		"aud":     "api://product-api",
 		"exp":     time.Now().Add(time.Duration(JWTConf.ExpiresIn) * time.Second).Unix(),
 		"iat":     time.Now().Unix(),
-		"jti":     uuid.Must(uuid.NewRandom()).String(),
-		"version": 1,
+		"jti":     utils.NewUUID(),
+		"version": JWTConf.Version,
 	})
 
 	t, err := token.SignedString([]byte(JWTConf.SecretKey))

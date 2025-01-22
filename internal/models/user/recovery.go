@@ -5,12 +5,10 @@ import (
 	model "github.com/herbetyp/go-product-api/internal/models"
 )
 
-func Get(id string) (model.User, error) {
+func Recovery(u model.User) (model.User, error) {
 	db := database.GetDatabase()
 
-	var u model.User
-
-	result := db.Model(&u).Where("id", id).First(&u)
+	result := db.Model(&u).Unscoped().Where("id", u.ID).Update("deleted_at", nil)
 
 	if result.RowsAffected == 0 {
 		return model.User{}, result.Error

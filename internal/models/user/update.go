@@ -3,14 +3,14 @@ package user
 import (
 	"github.com/herbetyp/go-product-api/internal/database"
 	model "github.com/herbetyp/go-product-api/internal/models"
+	"gorm.io/gorm/clause"
 )
 
-func Get(id string) (model.User, error) {
+func Update(u model.User) (model.User, error) {
 	db := database.GetDatabase()
 
-	var u model.User
-
-	result := db.Model(&u).Where("id", id).First(&u)
+	result := db.Model(&u).Clauses(clause.Returning{}).
+		Where("id = ?", u.ID).Update("password", u.Password)
 
 	if result.RowsAffected == 0 {
 		return model.User{}, result.Error

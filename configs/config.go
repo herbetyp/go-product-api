@@ -37,6 +37,7 @@ type DBConfig struct {
 type JWTConfig struct {
 	SecretKey string
 	ExpiresIn time.Duration
+	Version   string
 }
 
 type CacheConfig struct {
@@ -81,6 +82,7 @@ func InitConfig() {
 			JWT: JWTConfig{
 				SecretKey: viper.GetString("jwt.secret_key"),
 				ExpiresIn: viper.GetDuration("jwt.expires_in"),
+				Version:   viper.GetString("jwt.version"),
 			},
 			CACHE: CacheConfig{
 				Password:  viper.GetString("cache.password"),
@@ -109,6 +111,7 @@ func InitConfig() {
 			JWT: JWTConfig{
 				SecretKey: viper.GetString("test_jwt.secret_key"),
 				ExpiresIn: viper.GetDuration("test_jwt.expires_in"),
+				Version:   viper.GetString("test_jwt.version"),
 			},
 			CACHE: CacheConfig{
 				Password:  viper.GetString("test_cache.password"),
@@ -142,6 +145,7 @@ func InitConfig() {
 			JWT: JWTConfig{
 				SecretKey: os.Getenv("JWT_SECRET_KEY"),
 				ExpiresIn: time.Duration(JWTExpiresIn),
+				Version:   os.Getenv("JWT_VERSION"),
 			},
 			CACHE: CacheConfig{
 				Password:  os.Getenv("CACHE_PASSWORD"),
