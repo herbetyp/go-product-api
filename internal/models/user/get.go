@@ -5,7 +5,7 @@ import (
 	model "github.com/herbetyp/go-product-api/internal/models"
 )
 
-func Get(id string) (model.User, error) {
+func Get(id uint) (model.User, error) {
 	db := database.GetDatabase()
 
 	var u model.User

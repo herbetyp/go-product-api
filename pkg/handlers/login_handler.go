@@ -6,6 +6,7 @@ import (
 
 	model "github.com/herbetyp/go-product-api/internal/models/login"
 	service "github.com/herbetyp/go-product-api/pkg/services"
+	"github.com/herbetyp/go-product-api/pkg/services/helpers"
 )
 
 func NewLogin(data model.LoginDTO) (string, error) {
@@ -15,7 +16,7 @@ func NewLogin(data model.LoginDTO) (string, error) {
 		return "", fmt.Errorf("error on get user from database")
 	}
 
-	if user.Password != service.SHA512Crypto(data.Password) {
+	if user.Password != helpers.HashPassword(data.Password) {
 		log.Print("invalid password")
 		return "", fmt.Errorf("invalid password")
 	}

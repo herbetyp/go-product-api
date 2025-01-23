@@ -7,12 +7,12 @@ import (
 )
 
 type User struct {
-	ID        string         `json:"id" gorm:"type:uuid;primaryKey;default:gen_random_uuid()"`
-	Username  string         `json:"username" gorm:"not null"`
-	Email     string         `json:"email" gorm:"unique;not null"`
+	ID        uint           `json:"id" gorm:"primaryKey"`
+	Username  string         `json:"username,omitempty" gorm:"not null"`
+	Email     string         `json:"email,omitempty" gorm:"unique;not null"`
 	Password  string         `json:"password,omitempty" gorm:"not null"`
 	IsAdmin   bool           `json:"is_admin,omitempty" gorm:"default:false"`
-	CreatedAt time.Time      `json:"created_at"`
+	CreatedAt time.Time      `json:"created_at,omitempty"`
 	UpdatedAt time.Time      `json:"updated_at,omitempty"`
 	DeletedAt gorm.DeletedAt `json:"deleted_at,omitempty" gorm:"index"`
 	LastLogin time.Time      `json:"last_login,omitempty"`
@@ -33,7 +33,7 @@ func NewUser(username string, email string, passw string) *User {
 	}
 }
 
-func NewUserWithID(id string, username string, email string, passw string) *User {
+func NewUserWithID(id uint, username string, email string, passw string) *User {
 	return &User{
 		ID:       id,
 		Username: username,

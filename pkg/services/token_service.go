@@ -1,12 +1,13 @@
 package services
 
 import (
+	"fmt"
 	"log"
 	"time"
 
 	"github.com/golang-jwt/jwt/v5"
 	config "github.com/herbetyp/go-product-api/configs"
-	utils "github.com/herbetyp/go-product-api/pkg/services/helpers"
+	"github.com/herbetyp/go-product-api/pkg/services/helpers"
 )
 
 func GetJwtClaims(tokenString string) (jwt.MapClaims, error) {
@@ -16,16 +17,16 @@ func GetJwtClaims(tokenString string) (jwt.MapClaims, error) {
 	return claims, nil
 }
 
-func GenerateToken(id string) (string, error) {
+func GenerateToken(id uint) (string, error) {
 	JWTConf := config.GetConfig().JWT
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS512, jwt.MapClaims{
-		"sub":     id,
+		"sub":     fmt.Sprint(id),
 		"iss":     "auth-product-api",
 		"aud":     "api://product-api",
 		"exp":     time.Now().Add(time.Duration(JWTConf.ExpiresIn) * time.Second).Unix(),
 		"iat":     time.Now().Unix(),
-		"jti":     utils.NewUUID(),
+		"jti":     helpers.NewUUID(),
 		"version": JWTConf.Version,
 	})
 

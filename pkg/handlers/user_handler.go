@@ -5,13 +5,13 @@ import (
 
 	"github.com/herbetyp/go-product-api/internal/models"
 	model "github.com/herbetyp/go-product-api/internal/models/user"
-	"github.com/herbetyp/go-product-api/pkg/services"
+	"github.com/herbetyp/go-product-api/pkg/services/helpers"
 )
 
 func CreateUser(data models.UserDTO) (models.User, error) {
 	user := models.NewUser(data.Username, data.Email, data.Password)
 
-	user.Password = services.SHA512Crypto(user.Password)
+	user.Password = helpers.HashPassword(user.Password)
 
 	u, err := model.Create(*user)
 	if err != nil {
@@ -21,7 +21,7 @@ func CreateUser(data models.UserDTO) (models.User, error) {
 	return u, nil
 }
 
-func GetUser(id string) (models.User, error) {
+func GetUser(id uint) (models.User, error) {
 	user, err := model.Get(id)
 	if err != nil {
 		log.Printf("cannot find user: %v", err)
@@ -40,10 +40,10 @@ func GetUsers() ([]models.User, error) {
 	return users, nil
 }
 
-func UpdateUser(id string, data models.UserDTO) (models.User, error) {
-	user := models.NewUserWithID(id, data.Username, data.Email, data.Password)
+func UpdateUser(id uint, data models.UserDTO) (models.User, error) {
+	user := models.NewUserWithID(id, data.Username, "", data.Password)
 
-	user.Password = services.SHA512Crypto(user.Password)
+	user.Password = helpers.HashPassword(user.Password)
 
 	u, err := model.Update(*user)
 	if err != nil {
@@ -53,7 +53,7 @@ func UpdateUser(id string, data models.UserDTO) (models.User, error) {
 	return u, nil
 }
 
-func DeleteUser(id string, hardDelete string) (models.User, error) {
+func DeleteUser(id uint, hardDelete string) (models.User, error) {
 	user := models.NewUserWithID(id, "", "", "")
 
 	u, err := model.Delete(*user, hardDelete)
@@ -64,7 +64,7 @@ func DeleteUser(id string, hardDelete string) (models.User, error) {
 	return u, nil
 }
 
-func RecoveryUser(id string) (models.User, error) {
+func RecoveryUser(id uint) (models.User, error) {
 	user := models.NewUserWithID(id, "", "", "")
 
 	u, err := model.Recovery(*user)

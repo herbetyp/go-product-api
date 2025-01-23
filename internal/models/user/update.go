@@ -10,7 +10,7 @@ func Update(u model.User) (model.User, error) {
 	db := database.GetDatabase()
 
 	result := db.Model(&u).Clauses(clause.Returning{}).
-		Where("id = ?", u.ID).Update("password", u.Password)
+		Where("id = ?", u.ID).Updates(map[string]interface{}{"username": u.Username, "password": u.Password})
 
 	if result.RowsAffected == 0 {
 		return model.User{}, result.Error
