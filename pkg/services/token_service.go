@@ -42,7 +42,7 @@ func GenerateToken(id uint) (string, error) {
 func ValidateToken(token string) (bool, jwt.MapClaims, error) {
 	conf := config.GetConfig()
 
-	// Validate token
+	// Validate token signature
 	tokenDecoded, err := jwt.Parse(token, func(t *jwt.Token) (interface{}, error) {
 		if _, isValid := t.Method.(*jwt.SigningMethodHMAC); !isValid {
 			return false, nil
@@ -51,16 +51,34 @@ func ValidateToken(token string) (bool, jwt.MapClaims, error) {
 	})
 
 	if err != nil {
-		log.Printf("invalid token: %s", err)
+		log.Printf("invalid token signature: %s", err)
 		return false, jwt.MapClaims{}, err
 	}
 
-	claims, _ := GetJwtClaims(tokenDecoded.Raw)
+	claims, err := GetJwtClaims(tokenDecoded.Raw)
+	if err != nil {
+		log.Printf("not get claim: %s", err)
+	}
 
-	// Validate claims
-	if claims["iss"] != "auth-product-api" || claims["aud"] != "api://product-api" {
-		log.Printf("invalid claim: %s", err)
-		return false, jwt.MapClaims{}, err
+	// Validate expiration
+	if exp, ok := claims["exp"].(float64); ok {
+		if int64(exp) < time.Now().Unix() {
+			log.Print("expired token")
+			return false, jwt.MapClaims{}, fmt.Errorf("expired token")
+		}
+	} else {
+		log.Print("missing exp claim")
+		return false, jwt.MapClaims{}, fmt.Errorf("missing exp claim")
+	}
+
+	// Validate default claims
+	if claims["iss"] != "auth-product-api" {
+		log.Print("invalid iss claim")
+		return false, jwt.MapClaims{}, fmt.Errorf("invalid iss claim")
+
+	} else if claims["aud"] != "api://product-api" {
+		log.Print("invalid version claim")
+		return false, jwt.MapClaims{}, fmt.Errorf("invalid version claim")
 	}
 	return true, claims, nil
 }
