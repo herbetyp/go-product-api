@@ -41,7 +41,7 @@ func GetUsers() ([]models.User, error) {
 }
 
 func UpdateUser(id uint, data models.UserDTO) (models.User, error) {
-	user := models.NewUserWithID(id, data.Username, "", data.Password)
+	user := models.NewUserWithID(id, data.Username, data.Password)
 
 	user.Password = helpers.HashPassword(user.Password)
 
@@ -53,25 +53,24 @@ func UpdateUser(id uint, data models.UserDTO) (models.User, error) {
 	return u, nil
 }
 
-func DeleteUser(id uint, hardDelete string) (models.User, error) {
-	user := models.NewUserWithID(id, "", "", "")
+func DeleteUser(id uint, hardDelete string) (bool, error) {
+	deleted, err := model.Delete(id, hardDelete)
 
-	u, err := model.Delete(*user, hardDelete)
 	if err != nil {
 		log.Printf("cannot delete user: %v", err)
-		return models.User{}, err
+		return deleted, err
 	}
-	return u, nil
+	return deleted, nil
 }
 
 func RecoveryUser(id uint) (models.User, error) {
-	user := models.NewUserWithID(id, "", "", "")
+	user := models.NewUserWithID(id, "", "")
 
 	u, err := model.Recovery(*user)
 
 	if err != nil {
+		log.Printf("cannot recovery user: %v", err)
 		return models.User{}, err
 	}
-
 	return u, nil
 }

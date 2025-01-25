@@ -9,8 +9,15 @@ import (
 func Update(u model.User) (model.User, error) {
 	db := database.GetDatabase()
 
-	result := db.Model(&u).Clauses(clause.Returning{}).
-		Where("id = ?", u.ID).Updates(map[string]interface{}{"username": u.Username, "password": u.Password})
+	result := db.Model(&u).Clauses(clause.Returning{}).Where("id = ?", u.ID)
+	if u.Username != "" {
+		result = result.Update("username", u.Username)
+	} else if u.Password != "" {
+		result = result.Update("password", u.Password)
+	} else {
+		result = result.Updates(map[string]interface{}{
+			"username": u.Username, "password": u.Password})
+	}
 
 	if result.RowsAffected == 0 {
 		return model.User{}, result.Error

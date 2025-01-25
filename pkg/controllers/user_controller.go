@@ -112,7 +112,7 @@ func UpdateUser(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"message": "user updated"})
+	c.JSON(http.StatusOK, result)
 }
 
 func DeleteUser(c *gin.Context) {
@@ -134,7 +134,7 @@ func DeleteUser(c *gin.Context) {
 
 	result, err := handlers.DeleteUser(uintID, hardDelete)
 
-	if result == (model.User{}) {
+	if !result {
 		c.JSON(http.StatusNotFound, gin.H{"error": "user not found"})
 		return
 	} else if err != nil {
@@ -171,5 +171,5 @@ func RecoveryUser(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"message": "user recovered"})
+	c.JSON(http.StatusOK, result)
 }

@@ -17,11 +17,11 @@ func NewLogin(data model.LoginDTO) (string, error) {
 	}
 
 	if user.Password != helpers.HashPassword(data.Password) {
-		log.Print("invalid password")
+		log.Printf("invalid password")
 		return "", fmt.Errorf("invalid password")
 	}
 
-	token, err := service.GenerateToken(user.ID)
+	token, err := service.GenerateToken(user.ID, user.Active)
 	if err != nil {
 		log.Printf("error on generate token: %s", err)
 		return "", fmt.Errorf("error on generate token")

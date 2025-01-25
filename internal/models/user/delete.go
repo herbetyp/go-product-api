@@ -5,20 +5,25 @@ import (
 	model "github.com/herbetyp/go-product-api/internal/models"
 )
 
-func Delete(u model.User, hardDelete string) (model.User, error) {
+func Delete(id uint, hardDelete string) (bool, error) {
 	db := database.GetDatabase()
+	u := model.User{}
 
 	if hardDelete == "true" {
-		result := db.Model(&u).Where("id", u.ID).Unscoped().Delete(&u)
-		if result.RowsAffected == 0 {
-			return model.User{}, result.Error
+		result := db.Model(&u).Where("id", id).Unscoped().Delete(&u)
+		if result.Error != nil {
+			return false, result.Error
+		} else if result.RowsAffected == 0 {
+			return false, nil
 		}
-		return u, result.Error
+		return true, nil
 	}
 
-	result := db.Model(&u).Where("id", u.ID).Delete(&u)
-	if result.RowsAffected == 0 {
-		return model.User{}, result.Error
+	result := db.Model(&u).Where("id", id).Delete(&u)
+	if result.Error != nil {
+		return false, result.Error
+	} else if result.RowsAffected == 0 {
+		return false, nil
 	}
-	return u, result.Error
+	return true, nil
 }

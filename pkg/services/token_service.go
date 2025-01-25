@@ -17,7 +17,7 @@ func GetJwtClaims(tokenString string) (jwt.MapClaims, error) {
 	return claims, nil
 }
 
-func GenerateToken(id uint) (string, error) {
+func GenerateToken(id uint, active bool) (string, error) {
 	JWTConf := config.GetConfig().JWT
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS512, jwt.MapClaims{
@@ -27,6 +27,7 @@ func GenerateToken(id uint) (string, error) {
 		"exp":     time.Now().Add(time.Duration(JWTConf.ExpiresIn) * time.Second).Unix(),
 		"iat":     time.Now().Unix(),
 		"jti":     helpers.NewUUID(),
+		"active":  active,
 		"version": JWTConf.Version,
 	})
 
