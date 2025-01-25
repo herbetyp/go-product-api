@@ -23,6 +23,7 @@ func CreateUser(data models.UserDTO) (models.User, error) {
 
 func GetUser(id uint) (models.User, error) {
 	user, err := model.Get(id)
+
 	if err != nil {
 		log.Printf("cannot find user: %v", err)
 		return models.User{}, err
@@ -33,6 +34,7 @@ func GetUser(id uint) (models.User, error) {
 
 func GetUsers() ([]models.User, error) {
 	users, err := model.GetAll()
+
 	if err != nil {
 		log.Printf("cannot find users: %v", err)
 		return []models.User{}, err

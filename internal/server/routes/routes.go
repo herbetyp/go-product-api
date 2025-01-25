@@ -13,9 +13,12 @@ func ConfigRoutes(router *gin.Engine) *gin.Engine {
 		ctx.JSON(200, gin.H{"message": "pong"})
 	})
 
+	// Login
 	base_url.POST("oauth2/token", controllers.NewLogin)
 
+	// Users
 	base_url.POST("/users", controllers.CreateUser)
+
 	users := base_url.Group("/users", middlewares.AuthMiddleware())
 	users.GET("", controllers.GetUsers)
 
@@ -24,6 +27,13 @@ func ConfigRoutes(router *gin.Engine) *gin.Engine {
 	user_id.PATCH("", controllers.UpdateUser)
 	user_id.DELETE("", controllers.DeleteUser)
 	user_id.POST("/recovery", controllers.RecoveryUser)
+
+	// Products
+	products := base_url.Group("/products", middlewares.AuthMiddleware())
+	products.POST("", controllers.CreateProduct)
+
+	product_id := products.Group("/:product_id")
+	product_id.GET("", controllers.GetProduct)
 
 	return router
 }

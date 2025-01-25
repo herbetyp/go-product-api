@@ -35,8 +35,8 @@
 - [x] Update User (*_username, password_*)
 - [x] Recovery User
 > Products
-- [ ] Create Product
-- [ ] Get Product
+- [x] Create Product
+- [x] Get Product
 - [ ] List Products
 - [ ] Update Product
 - [ ] Delete Product
