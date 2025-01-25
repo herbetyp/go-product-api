@@ -30,16 +30,16 @@
 - [x] Create User
 - [x] Get User
 - [x] List Users
-- [x] Delete User (*_soft delete_*)
-- [x] Delete User (*_hard delete_*)
+- [x] Delete User (*_soft delete_*, *_hard delete_*)
 - [x] Update User (*_username, password_*)
 - [x] Recovery User
 > Products
 - [x] Create Product
 - [x] Get Product
-- [ ] List Products
-- [ ] Update Product
-- [ ] Delete Product
+- [x] List Products
+- [x] Update Product
+- [x] Delete Product (*_soft delete_*, *_hard delete_*)
+- [x] Recovery Product
 > Documentation
 - [ ] Documentation with **Swagger**
 > Application systems

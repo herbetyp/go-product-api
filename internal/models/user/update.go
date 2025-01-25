@@ -20,9 +20,11 @@ func Update(u model.User) (model.User, error) {
 	}
 
 	if result.RowsAffected == 0 {
+		return model.User{}, nil
+	} else if result.Error != nil {
 		return model.User{}, result.Error
 	}
 
-	u = *model.FilterResult(u)
-	return u, result.Error
+	u = *model.FilterUserResult(u)
+	return u, nil
 }

@@ -13,9 +13,11 @@ func Recovery(u model.User) (model.User, error) {
 		Where("id", u.ID).Update("deleted_at", nil)
 
 	if result.RowsAffected == 0 {
+		return model.User{}, nil
+	} else if result.Error != nil {
 		return model.User{}, result.Error
 	}
 
-	u = *model.FilterResult(u)
-	return u, result.Error
+	u = *model.FilterUserResult(u)
+	return u, nil
 }

@@ -10,6 +10,6 @@ func Create(u model.User) (model.User, error) {
 
 	err := db.Model(&u).Create(&u).Error
 
-	u = *model.FilterResult(u)
+	u = *model.FilterUserResult(u)
 	return u, err
 }

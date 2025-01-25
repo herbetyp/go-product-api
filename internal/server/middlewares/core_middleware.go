@@ -51,7 +51,7 @@ func AuthMiddleware() gin.HandlerFunc {
 
 func UserMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		userID := c.Param("user_id")
+		userID := c.Param("user-id")
 
 		header := c.GetHeader("Authorization")
 		tokenString, _ := getTokenFromHeader(header)
@@ -74,7 +74,7 @@ func UserMiddleware() gin.HandlerFunc {
 		}
 
 		if userID != "" && sub != userID {
-			log.Printf("user id %s is not match sub claim %s", sub, userID)
+			log.Printf("user id %s is not match sub claim %s", userID, sub)
 			c.AbortWithStatusJSON(http.StatusUnauthorized,
 				gin.H{"error": "Unauthorized"})
 			return

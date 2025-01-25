@@ -1,19 +1,19 @@
-package user
+package product
 
 import (
 	"github.com/herbetyp/go-product-api/internal/database"
-	model "github.com/herbetyp/go-product-api/internal/models"
+	"github.com/herbetyp/go-product-api/internal/models"
 )
 
 func Delete(id uint, hardDelete string) (bool, error) {
 	db := database.GetDatabase()
-	u := model.User{}
+	u := models.Product{}
 
 	if hardDelete == "true" {
 		result := db.Model(&u).Where("id", id).Unscoped().Delete(&u)
-		if result.Error != nil {
+		if result.RowsAffected == 0 {
 			return false, result.Error
-		} else if result.RowsAffected == 0 {
+		} else if result.Error != nil {
 			return false, nil
 		}
 		return true, nil

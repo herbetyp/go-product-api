@@ -49,7 +49,7 @@ func GetUsers(c *gin.Context) {
 }
 
 func GetUser(c *gin.Context) {
-	id := c.Param("user_id")
+	id := c.Param("user-id")
 
 	if id == "" {
 		log.Print("Missing user id")
@@ -66,7 +66,7 @@ func GetUser(c *gin.Context) {
 
 	result, err := handlers.GetUser(uintID)
 
-	if result == (model.User{}) {
+	if result == (model.User{}) && err == nil {
 		c.JSON(http.StatusNotFound, gin.H{"error": "user not found"})
 		return
 	} else if err != nil {
@@ -78,7 +78,7 @@ func GetUser(c *gin.Context) {
 }
 
 func UpdateUser(c *gin.Context) {
-	id := c.Param("user_id")
+	id := c.Param("user-id")
 
 	if id == "" {
 		log.Print("Missing user id")
@@ -104,7 +104,7 @@ func UpdateUser(c *gin.Context) {
 
 	result, err := handlers.UpdateUser(uintID, dto)
 
-	if result == (model.User{}) {
+	if result == (model.User{}) && err == nil {
 		c.JSON(http.StatusNotFound, gin.H{"error": "user not found"})
 		return
 	} else if err != nil {
@@ -116,7 +116,7 @@ func UpdateUser(c *gin.Context) {
 }
 
 func DeleteUser(c *gin.Context) {
-	id := c.Param("user_id")
+	id := c.Param("user-id")
 	hardDelete := c.Query("hard-delete")
 
 	if id == "" {
@@ -146,11 +146,11 @@ func DeleteUser(c *gin.Context) {
 }
 
 func RecoveryUser(c *gin.Context) {
-	id := c.Param("user_id")
+	id := c.Param("user-id")
 
 	if id == "" {
 		log.Print("Missing user id")
-		c.JSON(http.StatusBadRequest, gin.H{"error": "ID has to be integer"})
+		c.JSON(http.StatusBadRequest, gin.H{"error": "id has to be integer"})
 		return
 	}
 
@@ -163,7 +163,7 @@ func RecoveryUser(c *gin.Context) {
 
 	result, err := handlers.RecoveryUser(uintID)
 
-	if result == (model.User{}) {
+	if result == (model.User{}) && err == nil {
 		c.JSON(http.StatusNotFound, gin.H{"error": "user not found"})
 		return
 	} else if err != nil {

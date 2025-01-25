@@ -7,16 +7,16 @@ import (
 )
 
 type User struct {
-	ID        uint           `json:"id" gorm:"primaryKey"`
-	Username  string         `json:"username,omitempty" gorm:"not null"`
-	Email     string         `json:"email,omitempty" gorm:"unique;not null"`
-	Password  string         `json:"password,omitempty" gorm:"not null"`
-	IsAdmin   bool           `json:"is_admin,omitempty" gorm:"default:false"`
-	Active    bool           `json:"active,omitempty" gorm:"default:true"`
-	CreatedAt time.Time      `json:"created_at,omitempty"`
-	UpdatedAt time.Time      `json:"updated_at,omitempty"`
-	DeletedAt gorm.DeletedAt `json:"deleted_at,omitempty" gorm:"index"`
-	LastLogin time.Time      `json:"last_login,omitempty"`
+	ID          uint           `json:"id" gorm:"primaryKey"`
+	Username    string         `json:"username,omitempty" gorm:"not null"`
+	Email       string         `json:"email,omitempty" gorm:"unique;not null"`
+	Password    string         `json:"password,omitempty" gorm:"not null"`
+	IsAdmin     bool           `json:"is_admin,omitempty" gorm:"default:false"`
+	Active      bool           `json:"active,omitempty" gorm:"default:true"`
+	CreatedAt   time.Time      `json:"created_at,omitempty"`
+	UpdatedAt   time.Time      `json:"updated_at,omitempty"`
+	DeletedAt   gorm.DeletedAt `json:"deleted_at,omitempty" gorm:"index"`
+	LastLoginAt time.Time      `json:"last_login_at,omitempty"`
 }
 
 type UserDTO struct {
@@ -42,13 +42,13 @@ func NewUserWithID(id uint, username string, passw string) *User {
 	}
 }
 
-func FilterResult(u User) *User {
+func FilterUserResult(u User) *User {
 	return &User{
-		ID:        u.ID,
-		Username:  u.Username,
-		Email:     u.Email,
-		CreatedAt: u.CreatedAt,
-		UpdatedAt: u.UpdatedAt,
-		LastLogin: u.LastLogin,
+		ID:          u.ID,
+		Username:    u.Username,
+		Email:       u.Email,
+		CreatedAt:   u.CreatedAt,
+		UpdatedAt:   u.UpdatedAt,
+		LastLoginAt: u.LastLoginAt,
 	}
 }

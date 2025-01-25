@@ -12,6 +12,8 @@ func Get(id uint) (model.Product, error) {
 
 	result := db.Model(&p).First(&p, id)
 	if result.RowsAffected == 0 {
+		return model.Product{}, nil
+	} else if result.Error != nil {
 		return model.Product{}, result.Error
 	}
 	return p, nil

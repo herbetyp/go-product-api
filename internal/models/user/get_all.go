@@ -10,7 +10,11 @@ func GetAll() ([]model.User, error) {
 
 	var u []model.User
 
-	err := db.Model(&u).Omit("password").Order("created_at DESC").Find(&u).Error
-
-	return u, err
+	result := db.Model(&u).Omit("password").Order("id DESC").Find(&u)
+	if result.RowsAffected == 0 {
+		return []model.User{}, nil
+	} else if result.Error != nil {
+		return []model.User{}, result.Error
+	}
+	return u, nil
 }

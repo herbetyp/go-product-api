@@ -3,18 +3,17 @@ package product
 import (
 	"github.com/herbetyp/go-product-api/internal/database"
 	"github.com/herbetyp/go-product-api/internal/models"
+	"gorm.io/gorm/clause"
 )
 
-func GetAll() ([]models.Product, error) {
+func Update(p models.Product) (models.Product, error) {
 	db := database.GetDatabase()
 
-	var p []models.Product
-
-	result := db.Model(&p).Order("id DESC").Find(&p)
+	result := db.Model(&p).Clauses(clause.Returning{}).Where("id = ?", p.ID).Updates(&p)
 	if result.RowsAffected == 0 {
-		return []models.Product{}, nil
+		return models.Product{}, nil
 	} else if result.Error != nil {
-		return []models.Product{}, result.Error
+		return models.Product{}, result.Error
 	}
 	return p, nil
 }

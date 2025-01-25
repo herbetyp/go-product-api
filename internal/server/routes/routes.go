@@ -22,7 +22,7 @@ func ConfigRoutes(router *gin.Engine) *gin.Engine {
 	users := base_url.Group("/users", middlewares.AuthMiddleware())
 	users.GET("", controllers.GetUsers)
 
-	user_id := users.Group("/:user_id", middlewares.UserMiddleware())
+	user_id := users.Group("/:user-id", middlewares.UserMiddleware())
 	user_id.GET("", controllers.GetUser)
 	user_id.PATCH("", controllers.UpdateUser)
 	user_id.DELETE("", controllers.DeleteUser)
@@ -33,8 +33,11 @@ func ConfigRoutes(router *gin.Engine) *gin.Engine {
 	products.POST("", controllers.CreateProduct)
 	products.GET("", controllers.GetProducts)
 
-	product_id := products.Group("/:product_id")
+	product_id := products.Group("/:product-id")
 	product_id.GET("", controllers.GetProduct)
+	product_id.PUT("", controllers.UpdateProduct)
+	product_id.DELETE("", controllers.DeleteProduct)
+	product_id.POST("", controllers.RecoveryProduct)
 
 	return router
 }

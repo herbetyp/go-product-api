@@ -11,11 +11,12 @@ func Get(id uint) (model.User, error) {
 	var u model.User
 
 	result := db.Model(&u).Where("id", id).First(&u)
-
 	if result.RowsAffected == 0 {
+		return model.User{}, nil
+	} else if result.Error != nil {
 		return model.User{}, result.Error
 	}
 
-	u = *model.FilterResult(u)
-	return u, result.Error
+	u = *model.FilterUserResult(u)
+	return u, nil
 }
