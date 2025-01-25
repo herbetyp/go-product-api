@@ -1,8 +1,8 @@
 ![Go](https://img.shields.io/badge/go-%2300ADD8.svg?style=for-the-badge&logo=go&logoColor=white)
 ![Postgres](https://img.shields.io/badge/postgres-%23316192.svg?style=for-the-badge&logo=postgresql&logoColor=white)
 ![Docker](https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=white)
-![Redis](https://img.shields.io/badge/redis-%23DD0031.svg?style=for-the-badge&logo=redis&logoColor=white)
-<!-- ![Swagger](https://img.shields.io/badge/-Swagger-%23Clojure?style=for-the-badge&logo=swagger&logoColor=white)
+<!-- ![Redis](https://img.shields.io/badge/redis-%23DD0031.svg?style=for-the-badge&logo=redis&logoColor=white)
+![Swagger](https://img.shields.io/badge/-Swagger-%23Clojure?style=for-the-badge&logo=swagger&logoColor=white)
 ![Nginx](https://img.shields.io/badge/nginx-%23009639.svg?style=for-the-badge&logo=nginx&logoColor=white) -->
 
 # Go Products API
@@ -15,8 +15,8 @@
 - [Docker](https://www.docker.com/)
 - [Gin Web Framwork](https://gin-gonic.com/)
 - [GORM](https://gorm.io/index.html)
-- [Redis](https://redis.io/)
-<!-- - [NGnix](https://nginx.org/)
+<!-- - [Redis](https://redis.io/)
+- [NGnix](https://nginx.org/)
 - [Swagger](https://swagger.io/) (documentation)
 - [Heroku](https://www.heroku.com/) (cloud platform) -->
 
@@ -28,25 +28,24 @@
 - [x] Authorization from **JWT Bearer Token**
 > Admin
 - [x] Create User
+- [x] Get User
 - [x] List Users
 - [x] Delete User (*_soft delete_*)
-- [ ] Delete User (*_hard delete_*)
+- [x] Delete User (*_hard delete_*)
+- [x] Update User (*_username, password_*)
 - [x] Recovery User
-> User / Admin
-- [x] Get User
-- [x] Reset Password
 > Products
-- [x] Create Product
-- [x] Get Product
-- [x] List Products
-- [x] Update Product
-- [x] Delete Product
+- [ ] Create Product
+- [ ] Get Product
+- [ ] List Products
+- [ ] Update Product
+- [ ] Delete Product
 > Documentation
 - [ ] Documentation with **Swagger**
 > Application systems
-- [x] **Log** System
-- [x] **Cache** System
-- [x] Auto **Migrations** System
+- [ ] **Log** System
+- [ ] **Cache** System
+- [ ] Auto **Migrations** System
 - [ ] **NGnix** proxy System
 ---
 
