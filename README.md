@@ -1,9 +1,8 @@
 ![Go](https://img.shields.io/badge/go-%2300ADD8.svg?style=for-the-badge&logo=go&logoColor=white)
 ![Postgres](https://img.shields.io/badge/postgres-%23316192.svg?style=for-the-badge&logo=postgresql&logoColor=white)
 ![Docker](https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=white)
-<!-- ![Redis](https://img.shields.io/badge/redis-%23DD0031.svg?style=for-the-badge&logo=redis&logoColor=white)
-![Swagger](https://img.shields.io/badge/-Swagger-%23Clojure?style=for-the-badge&logo=swagger&logoColor=white)
-![Nginx](https://img.shields.io/badge/nginx-%23009639.svg?style=for-the-badge&logo=nginx&logoColor=white) -->
+<!-- ![Redis](https://img.shields.io/badge/redis-%23DD0031.svg?style=for-the-badge&logo=redis&logoColor=white) -->
+<!-- ![Nginx](https://img.shields.io/badge/nginx-%23009639.svg?style=for-the-badge&logo=nginx&logoColor=white) -->
 
 # Go Product API
 
@@ -15,11 +14,8 @@
 - [Docker](https://www.docker.com/)
 - [Gin Web Framwork](https://gin-gonic.com/)
 - [GORM](https://gorm.io/index.html)
-<!-- - [Redis](https://redis.io/)
-- [NGnix](https://nginx.org/)
-- [Swagger](https://swagger.io/) (documentation)
-- [Heroku](https://www.heroku.com/) (cloud platform) -->
-
+<!-- - [Redis](https://redis.io/) -->
+<!-- - [NGnix](https://nginx.org/) -->
 
 ### API Features:
 
@@ -40,17 +36,15 @@
 - [x] Update Product
 - [x] Delete Product (*_soft delete_*, *_hard delete_*)
 - [x] Recovery Product
-> Documentation
-- [ ] Documentation with **Swagger**
 > Application systems
-- [ ] **JSON Logs** System
-- [ ] **Cache** System
-- [x] Auto **Migrations** System
-- [ ] **NGnix** proxy System
+- [ ] **JSON format log** system
+- [ ] **Cache** system
+- [x] Auto **Migrations** system
+<!-- - [ ] **NGnix** proxy System -->
 ---
 
 ### Run localy application:
-Pre commit (Optional)
+Pre commit (For development)
 ```bash
 pip intall pre-commit # install pre-commit with python pip
 go install golang.org/x/tools/cmd/goimports@latest # pre-commit hook
