@@ -26,7 +26,7 @@
 > Auth
 - [x] OAuth Authentication Endpoint (*_grant_type=client_credentials_*)
 - [x] Authorization from **JWT Bearer Token**
-> Admin
+> User
 - [x] Create User
 - [x] Get User
 - [x] List Users
