@@ -17,7 +17,7 @@ func ConfigRoutes(router *gin.Engine) *gin.Engine {
 
 	base_url.POST("/users", controllers.CreateUser)
 	users := base_url.Group("/users", middlewares.AuthMiddleware())
-	users.GET("", middlewares.UserMiddleware(), controllers.GetUsers)
+	users.GET("", controllers.GetUsers)
 
 	user_id := users.Group("/:user_id", middlewares.UserMiddleware())
 	user_id.GET("", controllers.GetUser)

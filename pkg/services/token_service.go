@@ -52,7 +52,7 @@ func ValidateToken(token string) (bool, jwt.MapClaims, error) {
 	})
 
 	if err != nil {
-		log.Printf("invalid token signature: %s", err)
+		log.Printf("%s", err)
 		return false, jwt.MapClaims{}, err
 	}
 
