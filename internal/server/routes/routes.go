@@ -31,6 +31,7 @@ func ConfigRoutes(router *gin.Engine) *gin.Engine {
 	// Products
 	products := base_url.Group("/products", middlewares.AuthMiddleware())
 	products.POST("", controllers.CreateProduct)
+	products.GET("", controllers.GetProducts)
 
 	product_id := products.Group("/:product_id")
 	product_id.GET("", controllers.GetProduct)

@@ -27,3 +27,13 @@ func GetProduct(id uint) (models.Product, error) {
 	}
 	return p, nil
 }
+
+func GetProducts() ([]models.Product, error) {
+	ps, err := model.GetAll()
+
+	if err != nil {
+		log.Printf("error on get products: %v", err)
+		return []models.Product{}, err
+	}
+	return ps, nil
+}

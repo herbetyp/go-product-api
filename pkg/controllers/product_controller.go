@@ -63,3 +63,19 @@ func GetProduct(c *gin.Context) {
 
 	c.JSON(200, result)
 }
+
+func GetProducts(c *gin.Context) {
+	result, err := handlers.GetProducts()
+
+	if len(result) == 0 {
+		c.JSON(http.StatusNotFound,
+			gin.H{"error": "not found products"})
+		return
+	} else if err != nil {
+		c.JSON(http.StatusBadRequest,
+			gin.H{"error": "not get products"})
+		return
+	}
+
+	c.JSON(200, result)
+}

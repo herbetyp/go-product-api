@@ -43,7 +43,7 @@
 > Documentation
 - [ ] Documentation with **Swagger**
 > Application systems
-- [ ] **Log** System
+- [ ] **JSON Logs** System
 - [ ] **Cache** System
 - [x] Auto **Migrations** System
 - [ ] **NGnix** proxy System

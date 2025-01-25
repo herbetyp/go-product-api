@@ -14,5 +14,5 @@ func Get(id uint) (model.Product, error) {
 	if result.RowsAffected == 0 {
 		return model.Product{}, result.Error
 	}
-	return p, result.Error
+	return p, nil
 }
