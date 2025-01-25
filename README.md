@@ -45,7 +45,7 @@
 > Application systems
 - [ ] **Log** System
 - [ ] **Cache** System
-- [ ] Auto **Migrations** System
+- [x] Auto **Migrations** System
 - [ ] **NGnix** proxy System
 ---
 
