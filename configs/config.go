@@ -19,7 +19,8 @@ type config struct {
 }
 
 type APIConfig struct {
-	Port string
+	Port      string
+	RateLimit int
 }
 
 type DBConfig struct {
@@ -66,7 +67,8 @@ func InitConfig() {
 	case "release":
 		cfg = &config{
 			API: APIConfig{
-				Port: viper.GetString("api.port"),
+				Port:      viper.GetString("api.port"),
+				RateLimit: viper.GetInt("api.rate_limit"),
 			},
 			DB: DBConfig{
 				Host:               viper.GetString("db.host"),
@@ -95,7 +97,8 @@ func InitConfig() {
 	case "test":
 		cfg = &config{
 			API: APIConfig{
-				Port: viper.GetString("test_api.port"),
+				Port:      viper.GetString("test_api.port"),
+				RateLimit: viper.GetInt("test_api.rate_limit"),
 			},
 			DB: DBConfig{
 				Host:               viper.GetString("test_db.host"),
@@ -129,7 +132,8 @@ func InitConfig() {
 
 		cfg = &config{
 			API: APIConfig{
-				Port: os.Getenv("API_PORT"),
+				Port:      os.Getenv("API_PORT"),
+				RateLimit: 50,
 			},
 			DB: DBConfig{
 				Host:               os.Getenv("DB_HOST"),
