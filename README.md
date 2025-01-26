@@ -39,6 +39,7 @@
 > Application systems
 - [ ] **JSON format log** system
 - [ ] **Cache** system
+- [x] **Rate limit** system
 - [x] Auto **Migrations** system
 <!-- - [ ] **NGnix** proxy System -->
 ---
