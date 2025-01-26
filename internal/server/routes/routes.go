@@ -1,16 +1,18 @@
 package routes
 
 import (
+	"net/http"
+
 	"github.com/gin-gonic/gin"
 	"github.com/herbetyp/go-product-api/internal/server/middlewares"
 	"github.com/herbetyp/go-product-api/pkg/controllers"
 )
 
 func ConfigRoutes(router *gin.Engine) *gin.Engine {
-	base_url := router.Group("/v1")
+	base_url := router.Group("/v1", middlewares.RateLimitByIPMiddleware())
 
 	base_url.GET("/ping", func(ctx *gin.Context) {
-		ctx.JSON(200, gin.H{"message": "pong"})
+		ctx.JSON(http.StatusOK, gin.H{"message": "pong"})
 	})
 
 	// Login
@@ -18,26 +20,21 @@ func ConfigRoutes(router *gin.Engine) *gin.Engine {
 
 	// Users
 	base_url.POST("/users", controllers.CreateUser)
-
-	users := base_url.Group("/users", middlewares.AuthMiddleware())
-	users.GET("", controllers.GetUsers)
-
-	user_id := users.Group("/:user-id", middlewares.UserMiddleware())
-	user_id.GET("", controllers.GetUser)
-	user_id.PATCH("", controllers.UpdateUser)
-	user_id.DELETE("", controllers.DeleteUser)
-	user_id.POST("/recovery", controllers.RecoveryUser)
+	users := base_url.Group("/users", middlewares.AuthMiddleware(), middlewares.UserMiddleware())
+	users.GET("", middlewares.AdminMiddleware(), controllers.GetUsers)
+	users.GET("/:user-id", controllers.GetUser)
+	users.PATCH("/:user-id", controllers.UpdateUser)
+	users.DELETE("/:user-id", controllers.DeleteUser)
+	users.POST("/:user-id/recovery", controllers.RecoveryUser)
 
 	// Products
 	products := base_url.Group("/products", middlewares.AuthMiddleware())
 	products.POST("", controllers.CreateProduct)
 	products.GET("", controllers.GetProducts)
-
-	product_id := products.Group("/:product-id")
-	product_id.GET("", controllers.GetProduct)
-	product_id.PUT("", controllers.UpdateProduct)
-	product_id.DELETE("", controllers.DeleteProduct)
-	product_id.POST("", controllers.RecoveryProduct)
+	products.GET("/:product-id", controllers.GetProduct)
+	products.PUT("/:product-id", controllers.UpdateProduct)
+	products.DELETE("/:product-id", controllers.DeleteProduct)
+	products.POST("/:product-id", controllers.RecoveryProduct)
 
 	return router
 }
