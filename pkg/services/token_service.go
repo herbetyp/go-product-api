@@ -7,17 +7,10 @@ import (
 
 	"github.com/golang-jwt/jwt/v5"
 	config "github.com/herbetyp/go-product-api/configs"
-	"github.com/herbetyp/go-product-api/pkg/services/helpers"
+	"github.com/herbetyp/go-product-api/utils"
 )
 
-func GetJwtClaims(tokenString string) (jwt.MapClaims, error) {
-	token, _, _ := jwt.NewParser().ParseUnverified(tokenString, jwt.MapClaims{})
-	claims, _ := token.Claims.(jwt.MapClaims)
-
-	return claims, nil
-}
-
-func GenerateToken(id uint, active bool) (string, error) {
+func GenerateToken(id uint) (string, error) {
 	JWTConf := config.GetConfig().JWT
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS512, jwt.MapClaims{
@@ -26,8 +19,7 @@ func GenerateToken(id uint, active bool) (string, error) {
 		"aud":     "api://product-api",
 		"exp":     time.Now().Add(time.Duration(JWTConf.ExpiresIn) * time.Second).Unix(),
 		"iat":     time.Now().Unix(),
-		"jti":     helpers.NewUUID(),
-		"active":  active,
+		"jti":     utils.NewUUID(),
 		"version": JWTConf.Version,
 	})
 
@@ -56,7 +48,7 @@ func ValidateToken(token string) (bool, jwt.MapClaims, error) {
 		return false, jwt.MapClaims{}, err
 	}
 
-	claims, err := GetJwtClaims(tokenDecoded.Raw)
+	claims, err := utils.GetJwtClaims(tokenDecoded.Raw)
 	if err != nil {
 		log.Printf("not get claim: %s", err)
 	}

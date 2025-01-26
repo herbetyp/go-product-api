@@ -9,7 +9,7 @@ import (
 	"github.com/herbetyp/go-product-api/internal/models"
 	model "github.com/herbetyp/go-product-api/internal/models/product"
 	"github.com/herbetyp/go-product-api/pkg/handlers"
-	"github.com/herbetyp/go-product-api/pkg/services/helpers"
+	"github.com/herbetyp/go-product-api/utils"
 )
 
 func CreateProduct(c *gin.Context) {
@@ -137,7 +137,7 @@ func DeleteProduct(c *gin.Context) {
 		return
 	}
 
-	uintID, err := helpers.StringToUint(id)
+	uintID, err := utils.StringToUint(id)
 	if err != nil {
 		log.Printf("invalid product id: %s", id)
 		c.JSON(http.StatusBadRequest, gin.H{"error": "invalid product id"})
@@ -166,7 +166,7 @@ func RecoveryProduct(c *gin.Context) {
 		return
 	}
 
-	uintID, err := helpers.StringToUint(id)
+	uintID, err := utils.StringToUint(id)
 	if err != nil {
 		log.Printf("invalid product id: %s", id)
 		c.JSON(http.StatusBadRequest, gin.H{"error": "invalid product id"})

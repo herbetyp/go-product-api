@@ -8,7 +8,7 @@ import (
 	model "github.com/herbetyp/go-product-api/internal/models"
 	"github.com/herbetyp/go-product-api/pkg/handlers"
 	"github.com/herbetyp/go-product-api/pkg/services"
-	"github.com/herbetyp/go-product-api/pkg/services/helpers"
+	"github.com/herbetyp/go-product-api/utils"
 )
 
 func CreateUser(c *gin.Context) {
@@ -57,7 +57,7 @@ func GetUser(c *gin.Context) {
 		return
 	}
 
-	uintID, err := helpers.StringToUint(id)
+	uintID, err := utils.StringToUint(id)
 	if err != nil {
 		log.Printf("invalid user id: %s", id)
 		c.JSON(http.StatusBadRequest, gin.H{"error": "invalid user id"})
@@ -86,7 +86,7 @@ func UpdateUser(c *gin.Context) {
 		return
 	}
 
-	uintID, err := helpers.StringToUint(id)
+	uintID, err := utils.StringToUint(id)
 	if err != nil {
 		log.Printf("invalid user id: %s", id)
 		c.JSON(http.StatusBadRequest, gin.H{"error": "invalid user id"})
@@ -125,7 +125,7 @@ func DeleteUser(c *gin.Context) {
 		return
 	}
 
-	uintID, err := helpers.StringToUint(id)
+	uintID, err := utils.StringToUint(id)
 	if err != nil {
 		log.Printf("invalid user id: %s", id)
 		c.JSON(http.StatusBadRequest, gin.H{"error": "invalid user id"})
@@ -154,7 +154,7 @@ func RecoveryUser(c *gin.Context) {
 		return
 	}
 
-	uintID, err := helpers.StringToUint(id)
+	uintID, err := utils.StringToUint(id)
 	if err != nil {
 		log.Printf("invalid user id: %s", id)
 		c.JSON(http.StatusBadRequest, gin.H{"error": "invalid user id"})

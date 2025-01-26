@@ -5,13 +5,13 @@ import (
 
 	"github.com/herbetyp/go-product-api/internal/models"
 	model "github.com/herbetyp/go-product-api/internal/models/user"
-	"github.com/herbetyp/go-product-api/pkg/services/helpers"
+	"github.com/herbetyp/go-product-api/utils"
 )
 
 func CreateUser(data models.UserDTO) (models.User, error) {
 	user := models.NewUser(data.Username, data.Email, data.Password)
 
-	user.Password = helpers.HashPassword(user.Password)
+	user.Password = utils.HashPassword(user.Password)
 
 	u, err := model.Create(*user)
 	if err != nil {
@@ -45,7 +45,7 @@ func GetUsers() ([]models.User, error) {
 func UpdateUser(id uint, data models.UserDTO) (models.User, error) {
 	user := models.NewUserWithID(id, data.Username, data.Password)
 
-	user.Password = helpers.HashPassword(user.Password)
+	user.Password = utils.HashPassword(user.Password)
 
 	u, err := model.Update(*user)
 	if err != nil {

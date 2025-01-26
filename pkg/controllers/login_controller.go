@@ -16,13 +16,13 @@ func NewLogin(c *gin.Context) {
 	err := c.BindJSON(&dto)
 	if err != nil {
 		log.Printf("invalid payload: %s", err)
-		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": "invalid request payload"})
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": "Invalid request payload"})
 		return
 	}
 
 	if dto.GranType != "client_credentials" {
 		log.Printf("invalid grant type: %s", dto.GranType)
-		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": "invalid grant type"})
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": "Invalid grant type"})
 		return
 	}
 
@@ -30,7 +30,7 @@ func NewLogin(c *gin.Context) {
 
 	if err != nil || token == "" {
 		log.Printf("error on login: %s", err)
-		c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "invalid credentials"})
+		c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "Access denied"})
 		return
 	}
 
