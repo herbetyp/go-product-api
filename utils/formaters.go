@@ -9,3 +9,11 @@ func StringToUint(id string) (uint, error) {
 	}
 	return uint(idInt), nil
 }
+
+func StringToBoolean(s string) (bool, error) {
+	boolean, err := strconv.ParseBool(s)
+	if err != nil {
+		return false, err
+	}
+	return boolean, nil
+}

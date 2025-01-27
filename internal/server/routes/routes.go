@@ -9,23 +9,31 @@ import (
 )
 
 func ConfigRoutes(router *gin.Engine) *gin.Engine {
+	// Base v1 API
 	base_url := router.Group("/v1", middlewares.RateLimitByIPMiddleware())
 
-	base_url.GET("/ping", func(ctx *gin.Context) {
-		ctx.JSON(http.StatusOK, gin.H{"message": "pong"})
+	// Health check
+	base_url.GET("/warmup", func(ctx *gin.Context) {
+		ctx.JSON(http.StatusOK, gin.H{"message": "Warmup success!"})
 	})
 
 	// Login
 	base_url.POST("oauth2/token", controllers.NewLogin)
 
+	// Admin
+	admin := base_url.Group("/admin", middlewares.AuthMiddleware(), middlewares.AdminMiddleware())
+	admin.GET("/users", controllers.GetUsers)
+	admin.DELETE("/users/:user-id", controllers.DeleteUser)
+	admin.PATCH("/users/:user-id/status", controllers.UpdateUserStatus)
+	admin.POST("/users/:user-id/recovery", controllers.RecoveryUser)
+	admin.DELETE("products/:product-id", controllers.DeleteProduct)
+	admin.POST("products/:product-id", controllers.RecoveryProduct)
+
 	// Users
 	base_url.POST("/users", controllers.CreateUser)
 	users := base_url.Group("/users", middlewares.AuthMiddleware(), middlewares.UserMiddleware())
-	users.GET("", middlewares.AdminMiddleware(), controllers.GetUsers)
 	users.GET("/:user-id", controllers.GetUser)
 	users.PATCH("/:user-id", controllers.UpdateUser)
-	users.DELETE("/:user-id", controllers.DeleteUser)
-	users.POST("/:user-id/recovery", controllers.RecoveryUser)
 
 	// Products
 	products := base_url.Group("/products", middlewares.AuthMiddleware())
@@ -33,8 +41,6 @@ func ConfigRoutes(router *gin.Engine) *gin.Engine {
 	products.GET("", controllers.GetProducts)
 	products.GET("/:product-id", controllers.GetProduct)
 	products.PUT("/:product-id", controllers.UpdateProduct)
-	products.DELETE("/:product-id", controllers.DeleteProduct)
-	products.POST("/:product-id", controllers.RecoveryProduct)
 
 	return router
 }

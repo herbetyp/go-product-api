@@ -25,11 +25,27 @@ func AdminMiddleware() gin.HandlerFunc {
 				gin.H{"error": "Unauthorized"})
 			return
 		}
+
+		if !user.Active {
+			log.Printf("user is not active")
+			c.AbortWithStatusJSON(http.StatusUnauthorized,
+				gin.H{"error": "Unauthorized"})
+			return
+		}
+
 		if !user.IsAdmin {
 			log.Printf("user is not admin")
 			c.AbortWithStatusJSON(http.StatusUnauthorized,
 				gin.H{"error": "Unauthorized"})
 			return
 		}
+
+		if !utils.CheckAdminPermissions(c.Request.Method, c.Request.URL.Path, sub) {
+			log.Printf("Action is not authorized")
+			c.AbortWithStatusJSON(http.StatusUnauthorized,
+				gin.H{"error": "Unauthorized"})
+			return
+		}
+
 	}
 }
