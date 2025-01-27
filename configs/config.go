@@ -76,15 +76,15 @@ func InitConfig() {
 				SSLmode:            os.Getenv("DB_SSLMODE"),
 				SetMaxOpenConns:    setMaxOpenConns,
 				SetMaxIdleConns:    setMaxIdleConns,
-				SetConnMaxLifetime: time.Duration(setConnMaxLifetime) * time.Second,
+				SetConnMaxLifetime: time.Duration(setConnMaxLifetime),
 			},
 			JWT: JWTConfig{
 				SecretKey: os.Getenv("JWT_SECRET_KEY"),
-				ExpiresIn: time.Duration(JWTExpiresIn) * time.Second,
+				ExpiresIn: time.Duration(JWTExpiresIn),
 				Version:   os.Getenv("JWT_VERSION"),
 			},
 		}
-	} else if os.Getenv("GINMODE") == "test" {
+	} else if os.Getenv("G1NM0D3") == "test" {
 		cfg = &config{
 			API: APIConfig{
 				Port:      viper.GetString("test_api.port"),
