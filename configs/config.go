@@ -54,31 +54,37 @@ func InitConfig() {
 		}
 	}
 
-	switch os.Getenv("GIN_MODE") {
-	case "release":
+	if os.Getenv("GIN_MODE") == "release" {
+		DBPort, _ := strconv.Atoi(os.Getenv("DB_PORT"))
+		JWTExpiresIn, _ := strconv.Atoi(os.Getenv("JWT_EXPIRATION_IN"))
+		rateLimit, _ := strconv.Atoi(os.Getenv("API_RATE_LIMIT"))
+		setMaxIdleConns, _ := strconv.Atoi(os.Getenv("DB_SET_MAX_IDLE_CONNS"))
+		setMaxOpenConns, _ := strconv.Atoi(os.Getenv("DB_SET_MAX_OPEN_CONNS"))
+		setConnMaxLifetime, _ := strconv.Atoi(os.Getenv("DB_SET_CONN_MAX_LIFETIME"))
+
 		cfg = &config{
 			API: APIConfig{
-				Port:      viper.GetString("api.port"),
-				RateLimit: viper.GetInt("api.rate_limit"),
+				Port:      os.Getenv("API_PORT"),
+				RateLimit: rateLimit,
 			},
 			DB: DBConfig{
-				Host:               viper.GetString("db.host"),
-				Port:               viper.GetInt("db.port"),
-				User:               viper.GetString("db.user"),
-				Password:           viper.GetString("db.password"),
-				DBName:             viper.GetString("db.dbname"),
-				SSLmode:            viper.GetString("db.sslmode"),
-				SetMaxIdleConns:    viper.GetInt("db.set_max_idle_conns"),
-				SetMaxOpenConns:    viper.GetInt("db.set_max_open_conns"),
-				SetConnMaxLifetime: viper.GetDuration("db.set_conn_max_lifetime"),
+				Host:               os.Getenv("DB_HOST"),
+				Port:               DBPort,
+				User:               os.Getenv("DB_USER"),
+				Password:           os.Getenv("DB_PASSWORD"),
+				DBName:             os.Getenv("DB_NAME"),
+				SSLmode:            os.Getenv("DB_SSLMODE"),
+				SetMaxOpenConns:    setMaxOpenConns,
+				SetMaxIdleConns:    setMaxIdleConns,
+				SetConnMaxLifetime: time.Duration(setConnMaxLifetime) * time.Second,
 			},
 			JWT: JWTConfig{
-				SecretKey: viper.GetString("jwt.secret_key"),
-				ExpiresIn: viper.GetDuration("jwt.expires_in"),
-				Version:   viper.GetString("jwt.version"),
+				SecretKey: os.Getenv("JWT_SECRET_KEY"),
+				ExpiresIn: time.Duration(JWTExpiresIn) * time.Second,
+				Version:   os.Getenv("JWT_VERSION"),
 			},
 		}
-	case "test":
+	} else if os.Getenv("GINMODE") == "test" {
 		cfg = &config{
 			API: APIConfig{
 				Port:      viper.GetString("test_api.port"),
@@ -99,32 +105,6 @@ func InitConfig() {
 				SecretKey: viper.GetString("test_jwt.secret_key"),
 				ExpiresIn: viper.GetDuration("test_jwt.expires_in"),
 				Version:   viper.GetString("test_jwt.version"),
-			},
-		}
-	case "debug":
-		DBPort, _ := strconv.Atoi(os.Getenv("DB_PORT"))
-		JWTExpiresIn, _ := strconv.Atoi(os.Getenv("JWT_EXPIRATION_IN"))
-
-		cfg = &config{
-			API: APIConfig{
-				Port:      os.Getenv("API_PORT"),
-				RateLimit: 50,
-			},
-			DB: DBConfig{
-				Host:               os.Getenv("DB_HOST"),
-				Port:               DBPort,
-				User:               os.Getenv("DB_USER"),
-				Password:           os.Getenv("DB_PASSWORD"),
-				DBName:             os.Getenv("DB_NAME"),
-				SSLmode:            "disable",
-				SetMaxIdleConns:    10,
-				SetMaxOpenConns:    100,
-				SetConnMaxLifetime: 60,
-			},
-			JWT: JWTConfig{
-				SecretKey: os.Getenv("JWT_SECRET_KEY"),
-				ExpiresIn: time.Duration(JWTExpiresIn),
-				Version:   os.Getenv("JWT_VERSION"),
 			},
 		}
 	}
