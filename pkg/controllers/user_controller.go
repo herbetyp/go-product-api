@@ -121,28 +121,28 @@ func DeleteUser(c *gin.Context) {
 
 	if id == "" {
 		log.Print("Missing user id")
-		c.JSON(http.StatusBadRequest, gin.H{"error": "missing user ID"})
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Missing user ID"})
 		return
 	}
 
 	uintID, err := utils.StringToUint(id)
 	if err != nil {
 		log.Printf("invalid user id: %s", id)
-		c.JSON(http.StatusBadRequest, gin.H{"error": "invalid user id"})
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid user id"})
 		return
 	}
 
 	result, err := handlers.DeleteUser(uintID, hardDelete)
 
 	if !result {
-		c.JSON(http.StatusNotFound, gin.H{"error": "user not found"})
+		c.JSON(http.StatusNotFound, gin.H{"error": "User not found"})
 		return
 	} else if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "not deleted user"})
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Not deleted user"})
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"message": "user deleted"})
+	c.JSON(http.StatusOK, gin.H{"message": "User deleted"})
 }
 
 func RecoveryUser(c *gin.Context) {
@@ -172,4 +172,40 @@ func RecoveryUser(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, result)
+}
+
+func UpdateUserStatus(c *gin.Context) {
+	id := c.Param("user-id")
+	status := c.Query("active")
+
+	if id == "" {
+		log.Print("Missing user ID")
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Missing user ID"})
+		return
+	}
+
+	uintID, err := utils.StringToUint(id)
+	if err != nil {
+		log.Printf("Invalid user id: %s", id)
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid user id"})
+		return
+	}
+
+	active, err := utils.StringToBoolean(status)
+	if err != nil {
+		log.Printf("Invalid status: %s", status)
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid status"})
+		return
+	}
+
+	result, err := handlers.UpdateUserStatus(uintID, active)
+	if !result {
+		c.JSON(http.StatusNotFound, gin.H{"error": "User not found"})
+		return
+	} else if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Not updated user status"})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"message": "User status updated"})
 }

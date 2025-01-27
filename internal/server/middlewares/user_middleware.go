@@ -28,14 +28,7 @@ func UserMiddleware() gin.HandlerFunc {
 		}
 
 		if !user.Active {
-			log.Printf("user is not active")
-			c.AbortWithStatusJSON(http.StatusUnauthorized,
-				gin.H{"error": "Unauthorized"})
-			return
-		}
-
-		if userId == sub && c.Request.Method == "DELETE" {
-			log.Printf("is not authorized self delete user %s", sub)
+			log.Printf("user %s is not active", sub)
 			c.AbortWithStatusJSON(http.StatusUnauthorized,
 				gin.H{"error": "Unauthorized"})
 			return

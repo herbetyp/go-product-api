@@ -76,3 +76,12 @@ func RecoveryUser(id uint) (models.User, error) {
 	}
 	return u, nil
 }
+
+func UpdateUserStatus(id uint, active bool) (bool, error) {
+	updatedStatus, err := model.UpdateStatus(id, active)
+	if err != nil {
+		log.Printf("cannot update user status: %v", err)
+		return false, err
+	}
+	return updatedStatus, nil
+}

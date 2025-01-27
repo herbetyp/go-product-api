@@ -28,3 +28,16 @@ func Update(u model.User) (model.User, error) {
 	u = *model.FilterUserResult(u)
 	return u, nil
 }
+
+func UpdateStatus(id uint, active bool) (bool, error) {
+	db := database.GetDatabase()
+
+	result := db.Model(&model.User{}).Clauses(clause.Returning{}).
+		Where("id = ?", id).Update("active", active)
+	if result.RowsAffected == 0 {
+		return false, nil
+	} else if result.Error != nil {
+		return false, result.Error
+	}
+	return true, nil
+}
