@@ -61,7 +61,7 @@ docker compose up -d # exposed in port 3000
 ```
 Runner Local Server *__Gin__*
 ```bash
-export GIN_MODE="test" # set gin mode
+export G1NM0D3="test" # set gin mode
 docker compose up -d product_api_go_db product_api_go_cache # run database/cache container
 go run cmd/main.go # exposed in port 5000
 ```

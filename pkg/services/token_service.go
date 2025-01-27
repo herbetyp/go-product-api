@@ -16,7 +16,7 @@ func GenerateToken(id uint) (string, error) {
 	token := jwt.NewWithClaims(jwt.SigningMethodHS512, jwt.MapClaims{
 		"sub":     fmt.Sprint(id),
 		"iss":     "auth-product-api",
-		"aud":     "api://product-api",
+		"aud":     "api://go-product-api",
 		"exp":     time.Now().Add(time.Duration(JWTConf.ExpiresIn) * time.Second).Unix(),
 		"iat":     time.Now().Unix(),
 		"jti":     utils.NewUUID(),
@@ -69,7 +69,7 @@ func ValidateToken(token string) (bool, jwt.MapClaims, error) {
 		log.Print("invalid iss claim")
 		return false, jwt.MapClaims{}, fmt.Errorf("invalid iss claim")
 
-	} else if claims["aud"] != "api://product-api" {
+	} else if claims["aud"] != "api://go-product-api" {
 		log.Print("invalid version claim")
 		return false, jwt.MapClaims{}, fmt.Errorf("invalid version claim")
 	}
