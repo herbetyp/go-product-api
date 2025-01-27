@@ -6,13 +6,13 @@
 
 # Go Product API
 
-> API for product inventory management.
+> API for product inventory management, with user and admin user permission system, also with authentication and authorization.
 
 ### Developed with:
 - [Golang](https://go.dev/)
 - [PostgreSQL](https://www.postgresql.org/)
 - [Docker](https://www.docker.com/)
-- [Gin Web Framwork](https://gin-gonic.com/)
+- [Gin Web Framework](https://gin-gonic.com/)
 - [GORM](https://gorm.io/index.html)
 <!-- - [Redis](https://redis.io/) -->
 <!-- - [NGnix](https://nginx.org/) -->
@@ -22,21 +22,23 @@
 > Auth
 - [x] OAuth Authentication Endpoint (*_grant_type=client_credentials_*)
 - [x] Authorization from **JWT Bearer Token**
-> User
+> **All Users**
 - [x] Create User
 - [x] Get User
-- [x] List Users
-- [x] Delete User (*_soft delete_*, *_hard delete_*)
 - [x] Update User (*_username, password_*)
+> **Admin Only**
+- [x] List Users
+- [x] Delete User (*_soft delete, hard delete_*)
 - [x] Recovery User
-> Products
+- [x] Active/Deactive User
+- [x] Delete Product (*_soft delete_*, *_hard delete_*)
+- [x] Recovery Product
+> **All Users** Products
 - [x] Create Product
 - [x] Get Product
 - [x] List Products
 - [x] Update Product
-- [x] Delete Product (*_soft delete_*, *_hard delete_*)
-- [x] Recovery Product
-> Application systems
+> **Application systems**
 - [ ] **JSON format log** system
 - [ ] **Cache** system
 - [x] **Rate limit** system
