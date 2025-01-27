@@ -1,56 +1,53 @@
 ![Go](https://img.shields.io/badge/go-%2300ADD8.svg?style=for-the-badge&logo=go&logoColor=white)
 ![Postgres](https://img.shields.io/badge/postgres-%23316192.svg?style=for-the-badge&logo=postgresql&logoColor=white)
 ![Docker](https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=white)
-<!-- ![Redis](https://img.shields.io/badge/redis-%23DD0031.svg?style=for-the-badge&logo=redis&logoColor=white)
-![Swagger](https://img.shields.io/badge/-Swagger-%23Clojure?style=for-the-badge&logo=swagger&logoColor=white)
-![Nginx](https://img.shields.io/badge/nginx-%23009639.svg?style=for-the-badge&logo=nginx&logoColor=white) -->
+<!-- ![Redis](https://img.shields.io/badge/redis-%23DD0031.svg?style=for-the-badge&logo=redis&logoColor=white) -->
+<!-- ![Nginx](https://img.shields.io/badge/nginx-%23009639.svg?style=for-the-badge&logo=nginx&logoColor=white) -->
 
 # Go Product API
 
-> API for product inventory management.
+> API for product inventory management, with user and admin user permission system, also with authentication and authorization.
 
 ### Developed with:
 - [Golang](https://go.dev/)
 - [PostgreSQL](https://www.postgresql.org/)
 - [Docker](https://www.docker.com/)
-- [Gin Web Framwork](https://gin-gonic.com/)
+- [Gin Web Framework](https://gin-gonic.com/)
 - [GORM](https://gorm.io/index.html)
-<!-- - [Redis](https://redis.io/)
-- [NGnix](https://nginx.org/)
-- [Swagger](https://swagger.io/) (documentation)
-- [Heroku](https://www.heroku.com/) (cloud platform) -->
-
+<!-- - [Redis](https://redis.io/) -->
+<!-- - [NGnix](https://nginx.org/) -->
 
 ### API Features:
 
 > Auth
 - [x] OAuth Authentication Endpoint (*_grant_type=client_credentials_*)
 - [x] Authorization from **JWT Bearer Token**
-> Admin
+> **All Users**
 - [x] Create User
 - [x] Get User
-- [x] List Users
-- [x] Delete User (*_soft delete_*)
-- [x] Delete User (*_hard delete_*)
 - [x] Update User (*_username, password_*)
+> **Admin Only**
+- [x] List Users
+- [x] Delete User (*_soft delete, hard delete_*)
 - [x] Recovery User
-> Products
-- [ ] Create Product
-- [ ] Get Product
-- [ ] List Products
-- [ ] Update Product
-- [ ] Delete Product
-> Documentation
-- [ ] Documentation with **Swagger**
-> Application systems
-- [ ] **Log** System
-- [ ] **Cache** System
-- [ ] Auto **Migrations** System
-- [ ] **NGnix** proxy System
+- [x] Active/Deactive User
+- [x] Delete Product (*_soft delete_*, *_hard delete_*)
+- [x] Recovery Product
+> **All Users** Products
+- [x] Create Product
+- [x] Get Product
+- [x] List Products
+- [x] Update Product
+> **Application systems**
+- [ ] **JSON format log** system
+- [ ] **Cache** system
+- [x] **Rate limit** system
+- [x] Auto **Migrations** system
+<!-- - [ ] **NGnix** proxy System -->
 ---
 
 ### Run localy application:
-Pre commit (Optional)
+Pre commit (For development)
 ```bash
 pip intall pre-commit # install pre-commit with python pip
 go install golang.org/x/tools/cmd/goimports@latest # pre-commit hook
