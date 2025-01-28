@@ -13,8 +13,8 @@ func ConfigRoutes(router *gin.Engine) *gin.Engine {
 	base_url := router.Group("/v1", middlewares.RateLimitByIPMiddleware())
 
 	// Health check
-	base_url.GET("/warmup", func(ctx *gin.Context) {
-		ctx.JSON(http.StatusOK, gin.H{"message": "Warmup success!"})
+	base_url.GET("/health", func(ctx *gin.Context) {
+		ctx.JSON(http.StatusOK, gin.H{"status": "Healthy"})
 	})
 
 	// Login

@@ -18,8 +18,9 @@ type config struct {
 }
 
 type APIConfig struct {
-	Port      string
-	RateLimit int
+	Port           string
+	RateLimit      int
+	RateLimitBurst int
 }
 
 type DBConfig struct {
@@ -61,11 +62,13 @@ func InitConfig() {
 		setMaxIdleConns, _ := strconv.Atoi(os.Getenv("DB_SET_MAX_IDLE_CONNS"))
 		setMaxOpenConns, _ := strconv.Atoi(os.Getenv("DB_SET_MAX_OPEN_CONNS"))
 		setConnMaxLifetime, _ := strconv.Atoi(os.Getenv("DB_SET_CONN_MAX_LIFETIME"))
+		RateLimitBurst, _ := strconv.Atoi(os.Getenv("API_RATE_LIMIT_BURST"))
 
 		cfg = &config{
 			API: APIConfig{
-				Port:      os.Getenv("API_PORT"),
-				RateLimit: rateLimit,
+				Port:           os.Getenv("API_PORT"),
+				RateLimit:      rateLimit,
+				RateLimitBurst: RateLimitBurst,
 			},
 			DB: DBConfig{
 				Host:               os.Getenv("DB_HOST"),
@@ -87,8 +90,9 @@ func InitConfig() {
 	} else if os.Getenv("G1NM0D3") == "test" {
 		cfg = &config{
 			API: APIConfig{
-				Port:      viper.GetString("test_api.port"),
-				RateLimit: viper.GetInt("test_api.rate_limit"),
+				Port:           viper.GetString("test_api.port"),
+				RateLimit:      viper.GetInt("test_api.rate_limit_per_second"),
+				RateLimitBurst: viper.GetInt("test_api.rate_limit_burst"),
 			},
 			DB: DBConfig{
 				Host:               viper.GetString("test_db.host"),
