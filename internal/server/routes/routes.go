@@ -10,7 +10,7 @@ import (
 
 func ConfigRoutes(router *gin.Engine) *gin.Engine {
 	// Base v1 API
-	base_url := router.Group("/v1", middlewares.RateLimitByIPMiddleware(), middlewares.RequestIDMiddleware())
+	base_url := router.Group("/v1", middlewares.RequestIDMiddleware(), middlewares.RateLimitByIPMiddleware())
 
 	// Health check
 	base_url.GET("/health", func(ctx *gin.Context) {
