@@ -5,34 +5,46 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	config "github.com/herbetyp/go-product-api/configs"
 	model "github.com/herbetyp/go-product-api/internal/models"
 	"github.com/herbetyp/go-product-api/pkg/handlers"
 	"github.com/herbetyp/go-product-api/pkg/services"
 	"github.com/herbetyp/go-product-api/utils"
+	"go.uber.org/zap"
+	zapLog "go.uber.org/zap"
 )
 
 func CreateUser(c *gin.Context) {
 	var dto model.UserDTO
 
+	initLog := config.InitDefaultLogs(c)
+
 	err := c.BindJSON(&dto)
 	if err != nil {
-		log.Printf("invalid request payload: %s", err)
-		c.JSON(http.StatusBadRequest, gin.H{"error": "invalid request payload"})
+		initLog.Error("Invalid request payload", zapLog.Error(err))
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request payload"})
 		return
 	}
 
 	if !services.ValidateEmail(dto.Email) {
-		log.Printf("invalid email format: %s", dto.Email)
-		c.JSON(http.StatusBadRequest, gin.H{"error": "invalid email format"})
+		initLog.Error("Invalid email format", zap.String("email", dto.Email))
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid email format"})
 		return
 	}
 
 	result, err := handlers.CreateUser(dto)
-
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "not created user"})
+		initLog.Error("Error on create user", zapLog.Error(err))
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Not created user"})
 		return
 	}
+
+	initLog.Info("User created successfully",
+		zapLog.String("email", result.Email),
+		zapLog.String("username", result.Username),
+		zapLog.Uint("user_id", result.ID),
+		zapLog.Bool("active", result.Active),
+	)
 
 	c.JSON(http.StatusOK, result)
 }
@@ -119,29 +131,27 @@ func DeleteUser(c *gin.Context) {
 	id := c.Param("user-id")
 	hardDelete := c.Query("hard-delete")
 
-	if id == "" {
-		log.Print("Missing user id")
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Missing user ID"})
-		return
-	}
+	initLog := config.InitDefaultLogs(c)
 
 	uintID, err := utils.StringToUint(id)
 	if err != nil {
-		log.Printf("invalid user id: %s", id)
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid user id"})
+		initLog.Error("Invalid type user id", zapLog.Error(err))
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid type user id"})
 		return
 	}
 
 	result, err := handlers.DeleteUser(uintID, hardDelete)
-
 	if !result {
+		initLog.Error("User not found")
 		c.JSON(http.StatusNotFound, gin.H{"error": "User not found"})
 		return
 	} else if err != nil {
+		initLog.Error("Error on deleted user", zapLog.Error(err))
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Not deleted user"})
 		return
 	}
 
+	initLog.Info("User deleted successfully", zapLog.String("user_id", id))
 	c.JSON(http.StatusOK, gin.H{"message": "User deleted"})
 }
 

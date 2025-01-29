@@ -10,8 +10,9 @@ import (
 	"github.com/herbetyp/go-product-api/utils"
 )
 
-func GenerateToken(id uint) (string, error) {
+func GenerateToken(id uint) (string, string, uint, error) {
 	JWTConf := config.GetConfig().JWT
+	jti := utils.NewUUID()
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS512, jwt.MapClaims{
 		"sub":     fmt.Sprint(id),
@@ -19,17 +20,17 @@ func GenerateToken(id uint) (string, error) {
 		"aud":     "api://go-product-api",
 		"exp":     time.Now().Add(time.Duration(JWTConf.ExpiresIn) * time.Second).Unix(),
 		"iat":     time.Now().Unix(),
-		"jti":     utils.NewUUID(),
+		"jti":     jti,
 		"version": JWTConf.Version,
 	})
 
 	t, err := token.SignedString([]byte(JWTConf.SecretKey))
-
 	if err != nil {
 		log.Printf("error generating token: %s", err)
-		return "", err
+		return "", "", 0, err
 	}
-	return t, nil
+
+	return t, jti, id, nil
 }
 
 func ValidateToken(token string) (bool, jwt.MapClaims, error) {
