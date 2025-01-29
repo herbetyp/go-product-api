@@ -91,7 +91,7 @@ func InitConfig() {
 		cfg = &config{
 			API: APIConfig{
 				Port:           viper.GetString("test_api.port"),
-				RateLimit:      viper.GetInt("test_api.rate_limit_per_second"),
+				RateLimit:      viper.GetInt("test_api.rate_limit"),
 				RateLimitBurst: viper.GetInt("test_api.rate_limit_burst"),
 			},
 			DB: DBConfig{

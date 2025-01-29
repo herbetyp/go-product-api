@@ -8,23 +8,24 @@ import (
 	"github.com/herbetyp/go-product-api/utils"
 )
 
-func NewLogin(data model.LoginDTO) (string, error) {
+func NewLogin(data model.LoginDTO) (string, string, uint, error) {
 	user, err := model.Get(data.Email)
+
 	if err != nil {
-		return "", fmt.Errorf("error on get user: %s", err)
+		return "", "", 0, fmt.Errorf("error on get user: %s", err)
 	}
 
 	if !user.Active {
-		return "", fmt.Errorf("user is not active")
+		return "", "", 0, fmt.Errorf("user is not active")
 	}
 
 	if user.Password != utils.HashPassword(data.Password) {
-		return "", fmt.Errorf("invalid password")
+		return "", "", 0, fmt.Errorf("invalid password")
 	}
 
-	token, err := service.GenerateToken(user.ID)
+	token, jti, userId, err := service.GenerateToken(user.ID)
 	if err != nil {
-		return "", fmt.Errorf("error on generate token: %s", err)
+		return "", "", 0, fmt.Errorf("error on generate token: %s", err)
 	}
-	return token, nil
+	return token, jti, userId, nil
 }
