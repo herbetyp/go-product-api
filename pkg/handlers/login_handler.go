@@ -12,7 +12,7 @@ func NewLogin(data model.LoginDTO) (string, string, uint, error) {
 	user, err := model.Get(data.Email)
 
 	if err != nil {
-		return "", "", 0, fmt.Errorf("error on get user: %s", err)
+		return "", "", 0, err
 	}
 
 	if !user.Active {
@@ -25,7 +25,7 @@ func NewLogin(data model.LoginDTO) (string, string, uint, error) {
 
 	token, jti, userId, err := service.GenerateToken(user.ID)
 	if err != nil {
-		return "", "", 0, fmt.Errorf("error on generate token: %s", err)
+		return "", "", 0, err
 	}
 	return token, jti, userId, nil
 }

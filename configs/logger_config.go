@@ -31,6 +31,7 @@ func init() {
 
 	defer log.Sync()
 }
+
 func InitDefaultLogs(c *gin.Context) *zapLog.Logger {
 	return log.With(
 		zapLog.String("request_id", c.GetHeader("X-Request-Id")),
