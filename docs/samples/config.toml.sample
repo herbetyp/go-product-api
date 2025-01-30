@@ -1,27 +1,27 @@
-[local_admin]
-uid = "@4D1m1nU1d"
-
-[local_api]
+[test_api]
 port = "5000"
+rate_limit = 2
+rate_limit_burst = 20
 
-[local_db]
+[test_db]
 host = "localhost"
-user = "myuser"
+user = "myuserdb"
 port = "5432"
-password = "mypassword"
+password = "mypasswordb"
 dbname = "postgres"
 sslmode = "disable"
 set_max_idle_conns = 10
 set_max_open_conns = 100
 set_conn_max_lifetime = 60
 
-[local_jwt]
-secret_key = "@MyS3crEt"
-expires_in = 7200
-
-[cache]
-user = "username"
-host = "product_api_go_cache"
+[test_cache]
+host = "localhost"
 port = "6379"
 password = "mypasswordcache"
+expires_in = 1800
 db = 0
+
+[test_jwt]
+secret_key = "S3cretK3y"
+expires_in = 3600
+version = "1"
