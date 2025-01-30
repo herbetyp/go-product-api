@@ -2,7 +2,7 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Run Application",
+            "name": "Go Product API Application",
             "type": "go",
             "request": "launch",
             "mode": "auto",
@@ -16,7 +16,10 @@
                 "DB_PASSWORD": "mypassword",
                 "DB_NAME": "postgres",
                 "JWT_SECRET_KEY": "@MyS3crEt",
-                "JWT_EXPIRATION_TIME": "7200"
+                "JWT_EXPIRATION_TIME": "7200",
+                "JWT_VERSION": "1",
+                "API_RATE_LIMIT": "10",
+                "API_RATE_LIMIT_BURST": "10",
             }
         }
     ]

@@ -14,6 +14,7 @@
 - [Docker](https://www.docker.com/)
 - [Gin Web Framework](https://gin-gonic.com/)
 - [GORM](https://gorm.io/index.html)
+- [Zap Logger](https://github.com/uber-go/zap)
 <!-- - [Redis](https://redis.io/) -->
 <!-- - [NGnix](https://nginx.org/) -->
 
@@ -39,7 +40,7 @@
 - [x] List Products
 - [x] Update Product
 > **Application systems**
-- [ ] **JSON format log** system
+- [x] **JSON format log** system
 - [ ] **Cache** system
 - [x] **Rate limit** system
 - [x] Auto **Migrations** system
