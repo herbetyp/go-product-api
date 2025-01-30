@@ -12,10 +12,8 @@ import (
 )
 
 var db *gorm.DB
-var count int
 
 func StartDatabase() {
-
 	DBConf := config.GetConfig().DB
 
 	dsn := fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=%s",
@@ -40,7 +38,6 @@ func StartDatabase() {
 	config.SetMaxOpenConns(DBConf.SetMaxOpenConns)
 	config.SetConnMaxLifetime(DBConf.SetConnMaxLifetime)
 
-	count = 1
 	log.Printf("Connected to database on port: %d", DBConf.Port)
 
 	defer migrations.AutoMigrations(db)
