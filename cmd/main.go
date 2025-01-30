@@ -13,6 +13,10 @@ func main() {
 	// Connecting on Database
 	database.StartDatabase()
 
+	// Running Migrations
+	db := database.GetDatabase()
+	db.AutoMigrate()
+
 	// Starting Server
 	runServer := server.RunServer()
 	runServer.Run()

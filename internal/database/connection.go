@@ -3,10 +3,8 @@ package database
 import (
 	"fmt"
 	"log"
-	"time"
 
 	config "github.com/herbetyp/go-product-api/configs"
-	"github.com/herbetyp/go-product-api/internal/database/migrations"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
@@ -29,7 +27,7 @@ func StartDatabase() {
 
 	db = database
 
-	config, err := database.DB()
+	config, err := db.DB()
 	if err != nil {
 		log.Printf("Could not get the database config: %s", err)
 	}
@@ -39,10 +37,6 @@ func StartDatabase() {
 	config.SetConnMaxLifetime(DBConf.SetConnMaxLifetime)
 
 	log.Printf("Connected to database on port: %d", DBConf.Port)
-
-	defer migrations.AutoMigrations(db)
-	time.Sleep(1 * time.Second)
-
 }
 func GetDatabase() *gorm.DB {
 	return db
