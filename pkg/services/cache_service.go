@@ -3,6 +3,7 @@ package services
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"log"
 	"time"
 
@@ -17,9 +18,7 @@ var cache *redis.Client
 func StartCache() {
 	cacheConf := config.GetConfig().CACHE
 
-	addr := cacheConf.Host + ":" + cacheConf.Port + "/" + cacheConf.Db
-	url := "redis://" + cacheConf.User + ":" + cacheConf.Password + "@" + addr + "?protocol=3"
-
+	url := fmt.Sprintf("redis://%s:%s", cacheConf.Addr, cacheConf.Port)
 	newCache, err := redis.ParseURL(url)
 	if err != nil {
 		logger.Error("Error parsing cache URL", err)

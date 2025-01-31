@@ -34,11 +34,8 @@ type DBConfig struct {
 }
 
 type CacheConfig struct {
-	Host      string
+	Addr      string
 	Port      string
-	User      string
-	Password  string
-	Db        string
 	ExpiresIn time.Duration
 }
 
@@ -76,11 +73,8 @@ func InitConfig() {
 			SetConnMaxLifetime: time.Duration(setConnMaxLifetime),
 		},
 		CACHE: CacheConfig{
-			Host:      os.Getenv("CACHE_HOST"),
+			Addr:      os.Getenv("CACHE_ADDR"),
 			Port:      os.Getenv("CACHE_PORT"),
-			User:      os.Getenv("CACHE_USER"),
-			Password:  os.Getenv("CACHE_PASSWORD"),
-			Db:        os.Getenv("CACHE_DB"),
 			ExpiresIn: time.Duration(CacheExpiresIn),
 		},
 		JWT: JWTConfig{
