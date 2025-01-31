@@ -36,6 +36,7 @@ type DBConfig struct {
 type CacheConfig struct {
 	Host      string
 	Port      string
+	User      string
 	Password  string
 	Db        string
 	ExpiresIn time.Duration
@@ -77,6 +78,7 @@ func InitConfig() {
 		CACHE: CacheConfig{
 			Host:      os.Getenv("CACHE_HOST"),
 			Port:      os.Getenv("CACHE_PORT"),
+			User:      os.Getenv("CACHE_USER"),
 			Password:  os.Getenv("CACHE_PASSWORD"),
 			Db:        os.Getenv("CACHE_DB"),
 			ExpiresIn: time.Duration(CacheExpiresIn),

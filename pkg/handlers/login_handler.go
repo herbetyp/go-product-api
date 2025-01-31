@@ -19,6 +19,9 @@ func NewLogin(data model.LoginDTO) (string, string, uint, error) {
 		if err != nil {
 			return "", "", 0, err
 		}
+		if u.ID == 0 {
+			cacheKey = utils.USER_PREFIX + "null"
+		}
 		services.SetCache(cacheKey, &u)
 		user = u
 	}
