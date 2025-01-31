@@ -3,13 +3,15 @@ package handlers
 import (
 	"github.com/herbetyp/go-product-api/internal/models"
 	model "github.com/herbetyp/go-product-api/internal/models/user"
+	"github.com/herbetyp/go-product-api/pkg/services"
+	service "github.com/herbetyp/go-product-api/pkg/services"
 	"github.com/herbetyp/go-product-api/utils"
 )
 
 func CreateUser(data models.UserDTO) (models.User, error) {
 	user := models.NewUser(data.Username, data.Email, data.Password)
 
-	user.Password = utils.HashPassword(user.Password)
+	user.Password, _ = service.HashPassword(user.Password)
 
 	u, err := model.Create(*user)
 	if err != nil {
@@ -40,7 +42,7 @@ func GetUsers() ([]models.User, error) {
 func UpdateUser(id uint, data models.UserDTO) (models.User, error) {
 	user := models.NewUserWithID(id, data.Username, data.Password)
 
-	user.Password = utils.HashPassword(user.Password)
+	user.Password, _ = service.HashPassword(user.Password)
 
 	u, err := model.Update(*user)
 	if err != nil {
@@ -70,6 +72,9 @@ func RecoveryUser(id uint) (models.User, error) {
 
 func UpdateUserStatus(id uint, active bool) (bool, error) {
 	updatedStatus, err := model.UpdateStatus(id, active)
+
+	u, _ := model.Get(id)
+	services.DeleteCache(utils.USER_PREFIX, u.Email, false)
 	if err != nil {
 		return false, err
 	}

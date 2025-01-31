@@ -5,7 +5,7 @@ import (
 	"strconv"
 
 	"github.com/gin-gonic/gin"
-	config "github.com/herbetyp/go-product-api/configs"
+	logger "github.com/herbetyp/go-product-api/configs/logger"
 	"github.com/herbetyp/go-product-api/internal/models"
 	model "github.com/herbetyp/go-product-api/internal/models/product"
 	"github.com/herbetyp/go-product-api/pkg/handlers"
@@ -16,7 +16,7 @@ import (
 func CreateProduct(c *gin.Context) {
 	var dto model.ProductDTO
 
-	initLog := config.InitDefaultLogs(c)
+	initLog := logger.InitDefaultLogs(c)
 
 	err := c.BindJSON(&dto)
 	if err != nil {
@@ -40,7 +40,7 @@ func CreateProduct(c *gin.Context) {
 func GetProduct(c *gin.Context) {
 	id := c.Param("product-id")
 
-	initLog := config.InitDefaultLogs(c)
+	initLog := logger.InitDefaultLogs(c)
 
 	if id == "" {
 		initLog.Error("Missing product ID")
@@ -73,7 +73,7 @@ func GetProduct(c *gin.Context) {
 func GetProducts(c *gin.Context) {
 	result, err := handlers.GetProducts()
 
-	initLog := config.InitDefaultLogs(c)
+	initLog := logger.InitDefaultLogs(c)
 
 	if len(result) == 0 && err == nil {
 		initLog.Error("Not found products")
@@ -92,7 +92,7 @@ func GetProducts(c *gin.Context) {
 func UpdateProduct(c *gin.Context) {
 	id := c.Param("product-id")
 
-	initLog := config.InitDefaultLogs(c)
+	initLog := logger.InitDefaultLogs(c)
 
 	if id == "" {
 		initLog.Error("Missing product ID")
@@ -136,7 +136,7 @@ func DeleteProduct(c *gin.Context) {
 	id := c.Param("product-id")
 	hardDelete := c.Query("hard-delete")
 
-	initLog := config.InitDefaultLogs(c)
+	initLog := logger.InitDefaultLogs(c)
 
 	if id == "" {
 		initLog.Error("Missing product ID")
@@ -170,7 +170,7 @@ func DeleteProduct(c *gin.Context) {
 func RecoveryProduct(c *gin.Context) {
 	id := c.Param("product-id")
 
-	initLog := config.InitDefaultLogs(c)
+	initLog := logger.InitDefaultLogs(c)
 
 	if id == "" {
 		initLog.Error("Missing product ID")

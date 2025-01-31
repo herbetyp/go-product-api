@@ -4,7 +4,7 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	config "github.com/herbetyp/go-product-api/configs"
+	logger "github.com/herbetyp/go-product-api/configs/logger"
 	model "github.com/herbetyp/go-product-api/internal/models"
 	"github.com/herbetyp/go-product-api/pkg/handlers"
 	"github.com/herbetyp/go-product-api/pkg/services"
@@ -15,7 +15,7 @@ import (
 func CreateUser(c *gin.Context) {
 	var dto model.UserDTO
 
-	initLog := config.InitDefaultLogs(c)
+	initLog := logger.InitDefaultLogs(c)
 
 	err := c.BindJSON(&dto)
 	if err != nil {
@@ -49,7 +49,7 @@ func CreateUser(c *gin.Context) {
 func GetUsers(c *gin.Context) {
 	result, err := handlers.GetUsers()
 
-	initLog := config.InitDefaultLogs(c)
+	initLog := logger.InitDefaultLogs(c)
 
 	if err != nil {
 		initLog.Error("Error on get users", zapLog.Error(err))
@@ -64,7 +64,7 @@ func GetUsers(c *gin.Context) {
 func GetUser(c *gin.Context) {
 	id := c.Param("user-id")
 
-	initLog := config.InitDefaultLogs(c)
+	initLog := logger.InitDefaultLogs(c)
 
 	uintID, err := utils.StringToUint(id)
 	if err != nil {
@@ -93,7 +93,7 @@ func GetUser(c *gin.Context) {
 func UpdateUser(c *gin.Context) {
 	id := c.Param("user-id")
 
-	initLog := config.InitDefaultLogs(c)
+	initLog := logger.InitDefaultLogs(c)
 
 	uintID, err := utils.StringToUint(id)
 	if err != nil {
@@ -132,7 +132,7 @@ func DeleteUser(c *gin.Context) {
 	id := c.Param("user-id")
 	hardDelete := c.Query("hard-delete")
 
-	initLog := config.InitDefaultLogs(c)
+	initLog := logger.InitDefaultLogs(c)
 
 	uintID, err := utils.StringToUint(id)
 	if err != nil {
@@ -159,7 +159,7 @@ func DeleteUser(c *gin.Context) {
 func RecoveryUser(c *gin.Context) {
 	id := c.Param("user-id")
 
-	initLog := config.InitDefaultLogs(c)
+	initLog := logger.InitDefaultLogs(c)
 
 	uintID, err := utils.StringToUint(id)
 	if err != nil {
@@ -189,7 +189,7 @@ func UpdateUserStatus(c *gin.Context) {
 	id := c.Param("user-id")
 	status := c.Query("active")
 
-	initLog := config.InitDefaultLogs(c)
+	initLog := logger.InitDefaultLogs(c)
 
 	uintID, err := utils.StringToUint(id)
 	if err != nil {

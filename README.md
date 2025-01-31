@@ -1,10 +1,11 @@
+
+
+# Go Product API
 ![Go](https://img.shields.io/badge/go-%2300ADD8.svg?style=for-the-badge&logo=go&logoColor=white)
 ![Postgres](https://img.shields.io/badge/postgres-%23316192.svg?style=for-the-badge&logo=postgresql&logoColor=white)
 ![Docker](https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=white)
-<!-- ![Redis](https://img.shields.io/badge/redis-%23DD0031.svg?style=for-the-badge&logo=redis&logoColor=white) -->
+![Redis](https://img.shields.io/badge/redis-%23DD0031.svg?style=for-the-badge&logo=redis&logoColor=white)
 <!-- ![Nginx](https://img.shields.io/badge/nginx-%23009639.svg?style=for-the-badge&logo=nginx&logoColor=white) -->
-
-# Go Product API
 
 > API for product inventory management, with user and admin user permission system, also with authentication and authorization.
 
@@ -15,7 +16,7 @@
 - [Gin Web Framework](https://gin-gonic.com/)
 - [GORM](https://gorm.io/index.html)
 - [Zap Logger](https://github.com/uber-go/zap)
-<!-- - [Redis](https://redis.io/) -->
+- [Redis](https://redis.io/)
 <!-- - [NGnix](https://nginx.org/) -->
 
 ### API Features:
@@ -62,10 +63,12 @@ docker compose up -d # exposed in port 3000
 ```
 Runner Local Server *__Gin__*
 ```bash
-export G1NM0D3="test" # set gin mode
-docker compose up -d product_api_go_db product_api_go_cache # run database/cache container
+cp docs/samples/envs.sh.sample ./envs.sh && source envs.sh # set envs
+docker compose up -d go_product_api_db go_product_api_cache # run database/cache container
 go run cmd/main.go # exposed in port 5000
 ```
+
+
 
 <!-- ### Architecture Diagram
 

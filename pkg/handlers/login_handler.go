@@ -3,23 +3,31 @@ package handlers
 import (
 	"fmt"
 
+	"github.com/herbetyp/go-product-api/internal/models"
 	model "github.com/herbetyp/go-product-api/internal/models/login"
+	"github.com/herbetyp/go-product-api/pkg/services"
 	service "github.com/herbetyp/go-product-api/pkg/services"
 	"github.com/herbetyp/go-product-api/utils"
 )
 
 func NewLogin(data model.LoginDTO) (string, string, uint, error) {
-	user, err := model.Get(data.Email)
+	var user models.User
+	cacheKey := utils.USER_PREFIX + data.Email
 
-	if err != nil {
-		return "", "", 0, err
+	if services.GetCache(cacheKey, &user) == "" {
+		u, err := model.Get(data.Email)
+		if err != nil {
+			return "", "", 0, err
+		}
+		services.SetCache(cacheKey, &u)
+		user = u
 	}
 
 	if !user.Active {
 		return "", "", 0, fmt.Errorf("user is not active")
 	}
 
-	if user.Password != utils.HashPassword(data.Password) {
+	if !service.CheckPasswordHash(data.Password, user.Password) {
 		return "", "", 0, fmt.Errorf("invalid password")
 	}
 

@@ -1,4 +1,4 @@
-package configs
+package logger
 
 import (
 	"os"

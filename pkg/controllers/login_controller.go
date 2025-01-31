@@ -4,7 +4,8 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	config "github.com/herbetyp/go-product-api/configs"
+	"github.com/herbetyp/go-product-api/configs"
+	logger "github.com/herbetyp/go-product-api/configs/logger"
 	model "github.com/herbetyp/go-product-api/internal/models/login"
 	handler "github.com/herbetyp/go-product-api/pkg/handlers"
 	zapLog "go.uber.org/zap"
@@ -13,7 +14,7 @@ import (
 func NewLogin(c *gin.Context) {
 	var dto model.LoginDTO
 
-	initLog := config.InitDefaultLogs(c)
+	initLog := logger.InitDefaultLogs(c)
 
 	err := c.BindJSON(&dto)
 	if err != nil {
@@ -42,6 +43,6 @@ func NewLogin(c *gin.Context) {
 		zapLog.Uint("user_id", userID),
 	)
 
-	JWTConf := config.GetConfig().JWT
+	JWTConf := configs.GetConfig().JWT
 	c.JSON(http.StatusOK, gin.H{"access_token": token, "token_type": "Bearer", "expires_in": JWTConf.ExpiresIn})
 }

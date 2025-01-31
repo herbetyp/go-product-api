@@ -6,6 +6,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	model "github.com/herbetyp/go-product-api/internal/models/user"
+	"github.com/herbetyp/go-product-api/pkg/services"
 	"github.com/herbetyp/go-product-api/utils"
 )
 
@@ -40,7 +41,7 @@ func AdminMiddleware() gin.HandlerFunc {
 			return
 		}
 
-		if !utils.CheckAdminPermissions(c.Request.Method, c.Request.URL.Path, sub) {
+		if !services.CheckAdminPermissions(c.Request.Method, c.Request.URL.Path, sub) {
 			log.Printf("Action is not authorized")
 			c.AbortWithStatusJSON(http.StatusUnauthorized,
 				gin.H{"error": "Unauthorized"})
