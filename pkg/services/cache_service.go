@@ -18,7 +18,7 @@ func StartCache() {
 	cacheConf := config.GetConfig().CACHE
 
 	addr := cacheConf.Host + ":" + cacheConf.Port + "/" + cacheConf.Db
-	url := "redis://" + ":" + cacheConf.Password + "@" + addr + "?protocol=3"
+	url := "redis://" + cacheConf.User + ":" + cacheConf.Password + "@" + addr + "?protocol=3"
 
 	newCache, err := redis.ParseURL(url)
 	if err != nil {
