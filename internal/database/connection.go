@@ -18,7 +18,8 @@ func StartDatabase() {
 		DBConf.Host, DBConf.Port, DBConf.User, DBConf.Password, DBConf.DBName, DBConf.SSLmode)
 
 	database, err := gorm.Open(postgres.Open(dsn), &gorm.Config{
-		PrepareStmt: true,
+		PrepareStmt:            true,
+		SkipDefaultTransaction: true,
 	})
 	if err != nil {
 		log.Printf("Could not connect to database: %s", err)

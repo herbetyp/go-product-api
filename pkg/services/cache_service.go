@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"log"
+	"strings"
 	"time"
 
 	config "github.com/herbetyp/go-product-api/configs"
@@ -34,7 +35,7 @@ func StartCache() {
 	log.Printf("Connected to cache at port: %s", cacheConf.Port)
 }
 
-func SetCache(key string, i interface{}) interface{} {
+func SetCache(key string, i interface{}) {
 	var ttl = config.GetConfig().CACHE.ExpiresIn
 
 	cacheValue, err := json.Marshal(i)
@@ -46,20 +47,23 @@ func SetCache(key string, i interface{}) interface{} {
 			logger.Error("Error setting cache", err)
 		}
 	}
-
-	return cacheValue
 }
 
-func GetCache(key string, i interface{}) string {
-	cacheData, err := cache.Get(ctx, key).Result()
+func GetCache(cacheKeys []string, i interface{}, ommitInResponse []string) string {
+	var cacheData string
+	var err error
 
-	if err != nil {
-		if err != redis.Nil {
-			logger.Error("Error getting cache", err)
+	for _, cacheKey := range cacheKeys {
+		cacheData, err = cache.Get(ctx, cacheKey).Result()
+		if err != nil {
+			logger.Error("Error deleting cache", err)
 		}
 	}
 
 	if cacheData != "" {
+		for _, field := range ommitInResponse {
+			cacheData = strings.Replace(cacheData, field, "", -1)
+		}
 		err = json.Unmarshal([]byte(cacheData), i)
 		if err != nil {
 			logger.Error("Error unmarshalling cache", err)
@@ -68,14 +72,16 @@ func GetCache(key string, i interface{}) string {
 	return cacheData
 }
 
-func DeleteCache(prefix string, key string, flushall bool) {
-	err := cache.Del(ctx, prefix+key).Err()
-	if err != nil {
-		logger.Error("Error deleting cache", err)
+func DeleteCache(cacheKeys []string, flushall bool) {
+	for _, cacheKey := range cacheKeys {
+		err := cache.Del(ctx, cacheKey).Err()
+		if err != nil {
+			logger.Error("Error deleting cache", err)
+		}
 	}
 
 	if flushall {
-		err := cache.Del(ctx, prefix+"all").Err()
+		err := cache.FlushAll(ctx).Err()
 		if err != nil {
 			logger.Error("Error flushing cache", err)
 		}
