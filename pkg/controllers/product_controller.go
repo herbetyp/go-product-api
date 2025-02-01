@@ -18,7 +18,7 @@ func CreateProduct(c *gin.Context) {
 
 	initLog := logger.InitDefaultLogs(c)
 
-	err := c.BindJSON(&dto)
+	err := c.ShouldBindJSON(&dto)
 	if err != nil {
 		initLog.Error("Invalid request payload", zapLog.Error(err))
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request payload"})
@@ -109,7 +109,7 @@ func UpdateProduct(c *gin.Context) {
 
 	var dto model.ProductDTO
 
-	err = c.BindJSON(&dto)
+	err = c.ShouldBindJSON(&dto)
 	if err != nil {
 		initLog.Error("Invalid request payload", zapLog.Error(err))
 		c.JSON(http.StatusBadRequest, "invalid request payload")

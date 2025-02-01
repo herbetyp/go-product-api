@@ -16,7 +16,7 @@ func NewLogin(c *gin.Context) {
 
 	initLog := logger.InitDefaultLogs(c)
 
-	err := c.BindJSON(&dto)
+	err := c.ShouldBindJSON(&dto)
 	if err != nil {
 		initLog.Error("Invalid request payload", zapLog.Error(err))
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": "Invalid request payload"})
@@ -30,7 +30,6 @@ func NewLogin(c *gin.Context) {
 	}
 
 	token, jti, userID, err := handler.NewLogin(dto)
-
 	if err != nil || token == "" {
 		initLog.Error("Error on login", zapLog.Error(err))
 		c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "Access denied"})

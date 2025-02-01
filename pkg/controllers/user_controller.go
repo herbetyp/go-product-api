@@ -17,7 +17,7 @@ func CreateUser(c *gin.Context) {
 
 	initLog := logger.InitDefaultLogs(c)
 
-	err := c.BindJSON(&dto)
+	err := c.ShouldBindJSON(&dto)
 	if err != nil {
 		initLog.Error("Invalid request payload", zapLog.Error(err))
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request payload"})
@@ -73,8 +73,8 @@ func GetUser(c *gin.Context) {
 		return
 	}
 
-	result, err := handlers.GetUser(uintID)
-
+	tokenUID := c.GetString("uid")
+	result, err := handlers.GetUser(uintID, tokenUID)
 	if result == (model.User{}) && err == nil {
 		initLog.Error("User not found")
 		c.JSON(http.StatusNotFound, gin.H{"error": "User not found"})
@@ -104,14 +104,15 @@ func UpdateUser(c *gin.Context) {
 
 	var dto model.UserDTO
 
-	err = c.BindJSON(&dto)
+	err = c.ShouldBindJSON(&dto)
 	if err != nil {
 		initLog.Error("invalid request payload", zapLog.Error(err))
 		c.JSON(http.StatusBadRequest, gin.H{"error": "invalid request payload"})
 		return
 	}
 
-	result, err := handlers.UpdateUser(uintID, dto)
+	tokenUID := c.GetString("uid")
+	result, err := handlers.UpdateUser(uintID, tokenUID, dto)
 
 	if result == (model.User{}) && err == nil {
 		initLog.Error("User not found")
@@ -141,7 +142,8 @@ func DeleteUser(c *gin.Context) {
 		return
 	}
 
-	result, err := handlers.DeleteUser(uintID, hardDelete)
+	tokenUID := c.GetString("uid")
+	result, err := handlers.DeleteUser(uintID, tokenUID, hardDelete)
 	if !result {
 		initLog.Error("User not found")
 		c.JSON(http.StatusNotFound, gin.H{"error": "User not found"})
@@ -168,7 +170,8 @@ func RecoveryUser(c *gin.Context) {
 		return
 	}
 
-	result, err := handlers.RecoveryUser(uintID)
+	tokenUID := c.GetString("uid")
+	result, err := handlers.RecoveryUser(uintID, tokenUID)
 
 	if result == (model.User{}) && err == nil {
 		initLog.Error("User not found")
@@ -205,7 +208,8 @@ func UpdateUserStatus(c *gin.Context) {
 		return
 	}
 
-	result, err := handlers.UpdateUserStatus(uintID, active)
+	tokenUID := c.GetString("uid")
+	result, err := handlers.UpdateUserStatus(uintID, tokenUID, active)
 	if !result {
 		initLog.Error("User not found")
 		c.JSON(http.StatusNotFound, gin.H{"error": "User not found"})

@@ -17,3 +17,7 @@ func StringToBoolean(s string) (bool, error) {
 	}
 	return boolean, nil
 }
+
+func UintToString(id uint) string {
+	return strconv.FormatUint(uint64(id), 10)
+}

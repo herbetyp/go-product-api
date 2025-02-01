@@ -18,11 +18,12 @@ func AuthMiddleware() gin.HandlerFunc {
 			return
 		}
 
-		ok, _, err := services.ValidateToken(tokenString)
+		ok, claims, err := services.ValidateToken(tokenString)
 		if !ok || err != nil {
 			c.AbortWithStatusJSON(http.StatusUnauthorized,
 				gin.H{"error": "Unauthorized"})
 			return
 		}
+		c.Set("uid", claims["uid"])
 	}
 }

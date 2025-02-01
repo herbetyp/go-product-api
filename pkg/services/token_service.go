@@ -10,12 +10,13 @@ import (
 	"github.com/herbetyp/go-product-api/utils"
 )
 
-func GenerateToken(id uint) (string, string, uint, error) {
+func GenerateToken(id uint, email string) (string, string, uint, error) {
 	JWTConf := config.GetConfig().JWT
 	jti := utils.NewUUID()
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS512, jwt.MapClaims{
 		"sub":     fmt.Sprint(id),
+		"uid":     utils.UseSHA256Hash(email),
 		"iss":     "auth-product-api",
 		"aud":     "api://go-product-api",
 		"exp":     time.Now().Add(time.Duration(JWTConf.ExpiresIn) * time.Second).Unix(),
