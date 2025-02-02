@@ -23,6 +23,7 @@ func ConfigRoutes(router *gin.Engine) *gin.Engine {
 	// Admin
 	admin := base_url.Group("/admin", middlewares.AuthMiddleware(), middlewares.AdminMiddleware())
 	admin.GET("/users", controllers.GetUsers)
+	admin.GET("/users/:user-id", controllers.GetUser)
 	admin.DELETE("/users/:user-id", controllers.DeleteUser)
 	admin.PATCH("/users/:user-id/status", controllers.UpdateUserStatus)
 	admin.POST("/users/:user-id/recovery", controllers.RecoveryUser)

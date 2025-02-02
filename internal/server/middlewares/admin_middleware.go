@@ -20,11 +20,9 @@ func AdminMiddleware() gin.HandlerFunc {
 		sub := claims["sub"].(string)
 		uintSub, _ := utils.StringToUint(sub)
 
-		tokenUID := claims["uid"].(string)
-		cacheKey := utils.USER_UID_PREFIX + tokenUID
-
 		var user models.User
 
+		cacheKey := utils.USER_AUTHORIZATION_PREFIX + sub
 		cacheKeys := []string{cacheKey}
 		ommitInResponse := []string{}
 		if services.GetCache(cacheKeys, &user, ommitInResponse) == "" {

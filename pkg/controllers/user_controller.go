@@ -73,8 +73,7 @@ func GetUser(c *gin.Context) {
 		return
 	}
 
-	tokenUID := c.GetString("uid")
-	result, err := handlers.GetUser(uintID, tokenUID)
+	result, err := handlers.GetUser(uintID, c.GetString("uid"))
 	if result == (model.User{}) && err == nil {
 		initLog.Error("User not found")
 		c.JSON(http.StatusNotFound, gin.H{"error": "User not found"})

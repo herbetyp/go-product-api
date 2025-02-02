@@ -11,7 +11,7 @@ import (
 
 func NewLogin(data model.LoginDTO) (string, string, uint, error) {
 	var user models.User
-	cacheKey := utils.USER_UID_PREFIX + utils.UseSHA256Hash(data.Email)
+	cacheKey := utils.USER_AUTHENTICATION_PREFIX + data.Email
 
 	cacheKeys := []string{cacheKey}
 	if services.GetCache(cacheKeys, &user, []string{}) == "" {
@@ -20,7 +20,7 @@ func NewLogin(data model.LoginDTO) (string, string, uint, error) {
 			return "", "", 0, err
 		}
 		if u.ID == 0 {
-			cacheKey = utils.USER_UID_PREFIX + "null"
+			cacheKey = utils.USER_AUTHENTICATION_PREFIX + "null"
 		}
 		services.SetCache(cacheKey, &u)
 		user = u
@@ -34,7 +34,7 @@ func NewLogin(data model.LoginDTO) (string, string, uint, error) {
 		return "", "", 0, fmt.Errorf("invalid password")
 	}
 
-	token, jti, userId, err := services.GenerateToken(user.ID, user.Email)
+	token, jti, userId, err := services.GenerateToken(user.ID)
 	if err != nil {
 		return "", "", 0, err
 	}

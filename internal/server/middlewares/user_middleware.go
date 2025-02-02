@@ -23,9 +23,7 @@ func UserMiddleware() gin.HandlerFunc {
 
 		var user models.User
 
-		tokenUID := claims["uid"].(string)
-		cacheKey := utils.USER_UID_PREFIX + tokenUID
-
+		cacheKey := utils.USER_AUTHORIZATION_PREFIX + userId
 		cacheKeys := []string{cacheKey}
 		ommitInResponse := []string{}
 		if services.GetCache(cacheKeys, &user, ommitInResponse) == "" {
@@ -41,14 +39,13 @@ func UserMiddleware() gin.HandlerFunc {
 		}
 
 		if !user.Active {
-			log.Printf("user %s is not active", sub)
+			log.Printf("user %d is not active", user.ID)
 			c.AbortWithStatusJSON(http.StatusUnauthorized,
 				gin.H{"error": "Unauthorized"})
 			return
 		}
-
-		if !user.IsAdmin && sub != userId {
-			log.Printf("user id %s is not match sub claim %s", userId, sub)
+		if sub != userId {
+			log.Printf("user id %d is not match sub claim", user.ID)
 			c.AbortWithStatusJSON(http.StatusUnauthorized,
 				gin.H{"error": "Unauthorized"})
 			return

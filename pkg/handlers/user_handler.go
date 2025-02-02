@@ -17,14 +17,14 @@ func CreateUser(data models.UserDTO) (models.User, error) {
 		return models.User{}, err
 	}
 
-	cacheKeys := []string{utils.USER_UID_PREFIX + "all"}
+	cacheKeys := []string{utils.USER_AUTHORIZATION_PREFIX + "all"}
 	service.DeleteCache(cacheKeys, false)
 	return u, nil
 }
 
-func GetUser(id uint, tokenUID string) (models.User, error) {
+func GetUser(id uint, tokenUUID string) (models.User, error) {
 	var user models.User
-	cacheKey := utils.USER_UID_PREFIX + tokenUID
+	cacheKey := utils.USER_AUTHORIZATION_PREFIX + utils.UintToString(id)
 
 	cacheKeys := []string{cacheKey}
 	ommitInResponse := []string{"password", "is_admin"}
@@ -32,6 +32,9 @@ func GetUser(id uint, tokenUID string) (models.User, error) {
 		u, err := userModel.Get(id)
 		if err != nil {
 			return models.User{}, err
+		}
+		if u.ID == 0 {
+			cacheKey = utils.USER_AUTHORIZATION_PREFIX + "null"
 		}
 		service.SetCache(cacheKey, &u)
 		user = u
@@ -42,7 +45,7 @@ func GetUser(id uint, tokenUID string) (models.User, error) {
 
 func GetUsers() ([]models.User, error) {
 	var users []models.User
-	cacheKey := utils.USER_UID_PREFIX + "all"
+	cacheKey := utils.USER_AUTHORIZATION_PREFIX + "all"
 
 	cacheKeys := []string{cacheKey}
 	ommitInResponse := []string{}
@@ -65,20 +68,25 @@ func UpdateUser(id uint, tokenUID string, data models.UserDTO) (models.User, err
 	if err != nil {
 		return models.User{}, err
 	}
-	cacheKeys := []string{utils.USER_UID_PREFIX + tokenUID}
+	cacheKeys := []string{
+		utils.USER_AUTHENTICATION_PREFIX + u.Email,
+		utils.USER_AUTHORIZATION_PREFIX + utils.UintToString(id),
+		utils.USER_AUTHORIZATION_PREFIX + "all",
+	}
 	service.DeleteCache(cacheKeys, false)
 	return u, nil
 }
 
 func DeleteUser(id uint, tokenUID string, hardDelete string) (bool, error) {
-	deleted, err := userModel.Delete(id, hardDelete)
+	deleted, email, err := userModel.Delete(id, hardDelete)
 
 	if err != nil {
 		return deleted, err
 	}
 	cacheKeys := []string{
-		utils.USER_UID_PREFIX + tokenUID,
-		utils.USER_UID_PREFIX + "all",
+		utils.USER_AUTHENTICATION_PREFIX + email,
+		utils.USER_AUTHORIZATION_PREFIX + utils.UintToString(id),
+		utils.USER_AUTHORIZATION_PREFIX + "all",
 	}
 	service.DeleteCache(cacheKeys, false)
 	return deleted, nil
@@ -92,22 +100,24 @@ func RecoveryUser(id uint, tokenUID string) (models.User, error) {
 		return models.User{}, err
 	}
 	cacheKeys := []string{
-		utils.USER_UID_PREFIX + tokenUID,
-		utils.USER_UID_PREFIX + "all",
+		utils.USER_AUTHENTICATION_PREFIX + u.Email,
+		utils.USER_AUTHORIZATION_PREFIX + utils.UintToString(id),
+		utils.USER_AUTHORIZATION_PREFIX + "all",
 	}
 	service.DeleteCache(cacheKeys, false)
 	return u, nil
 }
 
 func UpdateUserStatus(id uint, tokenUID string, active bool) (bool, error) {
-	updatedStatus, err := userModel.UpdateStatus(id, active)
+	updatedStatus, email, err := userModel.UpdateStatus(id, active)
 
 	if err != nil {
 		return updatedStatus, err
 	}
 	cacheKeys := []string{
-		utils.USER_UID_PREFIX + tokenUID,
-		utils.USER_UID_PREFIX + "all",
+		utils.USER_AUTHENTICATION_PREFIX + email,
+		utils.USER_AUTHORIZATION_PREFIX + utils.UintToString(id),
+		utils.USER_AUTHORIZATION_PREFIX + "all",
 	}
 	service.DeleteCache(cacheKeys, false)
 	return updatedStatus, nil

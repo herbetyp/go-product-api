@@ -29,15 +29,16 @@ func Update(u model.User) (model.User, error) {
 	return u, nil
 }
 
-func UpdateStatus(id uint, active bool) (bool, error) {
+func UpdateStatus(id uint, active bool) (bool, string, error) {
 	db := database.GetDatabase()
+	var u model.User
 
-	result := db.Model(&model.User{}).Clauses(clause.Returning{}).
+	result := db.Model(&u).Clauses(clause.Returning{}).
 		Where("id = ?", id).Update("active", active)
 	if result.RowsAffected == 0 {
-		return false, nil
+		return false, "", nil
 	} else if result.Error != nil {
-		return false, result.Error
+		return false, "", result.Error
 	}
-	return true, nil
+	return true, u.Email, nil
 }
