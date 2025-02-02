@@ -9,25 +9,17 @@
 
 > API for product inventory management, with user and admin user permission system, also with authentication and authorization.
 
-### Developed with:
-- [Golang](https://go.dev/)
-- [PostgreSQL](https://www.postgresql.org/)
-- [Docker](https://www.docker.com/)
-- [Gin Web Framework](https://gin-gonic.com/)
-- [GORM](https://gorm.io/index.html)
-- [Zap Logger](https://github.com/uber-go/zap)
-- [Redis](https://github.com/redis/go-redis)
-<!-- - [NGnix](https://nginx.org/) -->
 
 ## Run localy application:
-- Copy and export variables (*__Run in root project__*)
+
+#### Copy and export variables (*__Run in root project__*)
 ```bash
 cp -r docs/samples/*.sample $PWD; for i in *.sample ; do mv "$i" "$(basename "$i" .sample)" ; done && source envs.sh
 ```
 > [!NOTE]
 > When restarting the terminal session, the `source envs.sh` command must be executed again.
 
-- Run app in Docker container (with docker compose module) or run direct from terminal
+#### Run app in Docker container (with docker compose module) or run direct from terminal
 ```bash
 # using docker container, running on http://localhost:3000
 docker compose up -d
@@ -39,7 +31,7 @@ docker compose up -d go_product_api_db go_product_api_cache
 go run cmd/main.go
 ```
 
-**Create user:**
+#### Create user:
 ```bash
 curl --request POST \
   --url https://go-product-api.onrender.com/v1/users \
@@ -60,7 +52,7 @@ docker exec -ti $DB_CONTAINER_NAME psql -U $DB_USER \
 -d $DB_NAME -c "UPDATE public.users SET active = true, is_admin = true WHERE id = 1;"
 ```
 
-**Enable or disable user:**
+#### Enable or disable user:
 > [!NOTE]
 > With admin, calling endpoint `/v1/admin/users/<user-id>/status?active=<true|false>` is possible **enable** or **disable** others users.
 
@@ -106,3 +98,13 @@ pre-commit install # install pre-commit hooks
 - [x] **Rate limit** system
 - [x] Auto **Migrations** system
 <!-- - [ ] **NGnix** proxy System -->
+
+## Developed with:
+- [Golang](https://go.dev/)
+- [PostgreSQL](https://www.postgresql.org/)
+- [Docker](https://www.docker.com/)
+- [Gin Web Framework](https://gin-gonic.com/)
+- [GORM](https://gorm.io/index.html)
+- [Zap Logger](https://github.com/uber-go/zap)
+- [Redis](https://github.com/redis/go-redis)
+<!-- - [NGnix](https://nginx.org/) -->
