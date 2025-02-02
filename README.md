@@ -52,7 +52,7 @@ docker exec -ti $DB_CONTAINER_NAME psql -U $DB_USER \
 -d $DB_NAME -c "UPDATE public.users SET active = true, is_admin = true WHERE id = 1;"
 ```
 
-#### Enable or disable user:
+<!-- #### Enable or disable user:
 > [!NOTE]
 > With admin, calling endpoint `/v1/admin/users/<user-id>/status?active=<true|false>` is possible **enable** or **disable** others users.
 
@@ -60,7 +60,7 @@ docker exec -ti $DB_CONTAINER_NAME psql -U $DB_USER \
 curl --request PATCH \
   --url 'https://go-product-api.onrender.com/v1/admin/users/<user-id>/status?active=true' \
   --header 'Authorization: Bearer <JWT TOKEN>'
-```
+``` -->
 
 ---
 - Pre commit (*__For development only__*)
