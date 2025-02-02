@@ -48,30 +48,31 @@
 <!-- - [ ] **NGnix** proxy System -->
 
 ## Run localy application:
-Copy and export variables (*__runner in root project__*)
+- Copy and export variables (*__Run in root project__*)
 ```bash
-cp docs/samples/* .; for file in *.sample; do cp -r "$file" "${file%.sample}"; done && rm *.sample && source envs.sh
+cp -r samples/*.sample $PWD; for i in *.sample ; do mv "$i" "$(basename "$i" .sample)" ; done && source envs.sh
 ```
+> **Note:** When restarting the terminal session, the `source envs.sh` command must be executed again.
 
-Docker *__with docker compose module__*
+- Docker *__with docker compose module__*
 ```bash
 docker compose up -d # exposed in port 3000
 ```
 
-Runner Local Server *__Gin__*
+- Runner Local Server *__Gin__*
 ```bash
 docker compose up -d go_product_api_db go_product_api_cache
 go run cmd/main.go # exposed in port 5000
 ```
 
-Of default as users is created with `active` and `is_admin` as `false`, execute the following command to active the admin user **after crated first user using the API**:
+- Of default as users is created with `active` and `is_admin` as `false`, execute the following command to active the admin user **after crated first user using the API**:
 ```bash
 docker exec -ti $DB_CONTAINER_NAME psql -U $DB_USER \
 -d $DB_NAME -c "UPDATE public.users SET active = true, is_admin = true WHERE id = 1;"
 ```
 > **Note:** With admin, calling endpoint `/v1/admin/users/<user-id>/status?active=<true|false>` is possible **enable** or **disable** others users.
 
-Pre commit (*__For development__*)
+- Pre commit (*__For development only__*)
 ```bash
 pip intall pre-commit # install pre-commit with python pip
 go install golang.org/x/tools/cmd/goimports@latest # pre-commit hook
