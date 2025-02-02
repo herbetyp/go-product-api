@@ -52,10 +52,14 @@ Docker *__with docker compose module__*
 ```bash
 docker compose up -d # exposed in port 3000
 ```
+
+Copy and export variables (*__runner in root project__*)
+```bash
+cp docs/samples/* .; for file in *.sample; do cp -r "$file" "${file%.sample}"; done && rm *.sample && source envs.sh
+```
 Runner Local Server *__Gin__*
 ```bash
-cp docs/samples/envs.sh.sample ./envs.sh && source envs.sh # set envs
-docker compose up -d go_product_api_db go_product_api_cache # run database/cache container
+docker compose up -d go_product_api_db go_product_api_cache
 go run cmd/main.go # exposed in port 5000
 ```
 Of default as users is created with `active` and `is_admin` as `false`, execute the following command to active the admin user **after crated first user using the API**:
