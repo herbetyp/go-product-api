@@ -50,7 +50,7 @@
 ## Run localy application:
 - Copy and export variables (*__Run in root project__*)
 ```bash
-cp -r samples/*.sample $PWD; for i in *.sample ; do mv "$i" "$(basename "$i" .sample)" ; done && source envs.sh
+cp -r docs/samples/*.sample $PWD; for i in *.sample ; do mv "$i" "$(basename "$i" .sample)" ; done && source envs.sh
 ```
 > **Note:** When restarting the terminal session, the `source envs.sh` command must be executed again.
 
