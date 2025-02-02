@@ -12,14 +12,14 @@
 
 ## Run localy application:
 
-#### Copy and export variables (*__Run in root project__*)
+1) #### Copy and export variables (*__Run in root project__*)
 ```bash
 cp -r docs/samples/*.sample $PWD; for i in *.sample ; do mv "$i" "$(basename "$i" .sample)" ; done && source envs.sh
 ```
 > [!NOTE]
 > When restarting the terminal session, the `source envs.sh` command must be executed again.
 
-#### Run app in Docker container (with docker compose module) or run direct from terminal
+2) #### Run app in Docker container (with docker compose module) or run direct from terminal
 ```bash
 # using docker container, running on http://localhost:3000
 docker compose up -d
@@ -31,7 +31,7 @@ docker compose up -d go_product_api_db go_product_api_cache
 go run cmd/main.go
 ```
 
-#### Create user:
+3) #### Create user:
 ```bash
 curl --request POST \
   --url https://go-product-api.onrender.com/v1/users \
