@@ -105,8 +105,10 @@ func UpdateUserStatus(id uint, tokenUID string, active bool) (bool, error) {
 	if err != nil {
 		return updatedStatus, err
 	}
-
-	cacheKeys := []string{utils.USER_UID_PREFIX + tokenUID}
+	cacheKeys := []string{
+		utils.USER_UID_PREFIX + tokenUID,
+		utils.USER_UID_PREFIX + "all",
+	}
 	service.DeleteCache(cacheKeys, false)
 	return updatedStatus, nil
 }
