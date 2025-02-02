@@ -16,10 +16,10 @@
 - [Gin Web Framework](https://gin-gonic.com/)
 - [GORM](https://gorm.io/index.html)
 - [Zap Logger](https://github.com/uber-go/zap)
-- [Redis](https://redis.io/)
+- [Redis](https://github.com/redis/go-redis)
 <!-- - [NGnix](https://nginx.org/) -->
 
-### API Features:
+## API Features:
 
 > Auth
 - [x] OAuth Authentication Endpoint (*_grant_type=client_credentials_*)
@@ -46,17 +46,8 @@
 - [x] **Rate limit** system
 - [x] Auto **Migrations** system
 <!-- - [ ] **NGnix** proxy System -->
----
 
-### Run localy application:
-Pre commit (For development)
-```bash
-pip intall pre-commit # install pre-commit with python pip
-go install golang.org/x/tools/cmd/goimports@latest # pre-commit hook
-go install github.com/golangci/golangci-lint/cmd/golangci-lint@v1.63.4 # pre-commit hook
-pre-commit install # install pre-commit hooks
-```
-
+## Run localy application:
 Docker *__with docker compose module__*
 ```bash
 docker compose up -d # exposed in port 3000
@@ -67,9 +58,17 @@ cp docs/samples/envs.sh.sample ./envs.sh && source envs.sh # set envs
 docker compose up -d go_product_api_db go_product_api_cache # run database/cache container
 go run cmd/main.go # exposed in port 5000
 ```
+Of default as users is created with `active` and `is_admin` as `false`, execute the following command to active the admin user **after crated first user using the API**:
+```bash
+docker exec -ti $DB_CONTAINER_NAME psql -U $DB_USER \
+-d $DB_NAME -c "UPDATE public.users SET active = true, is_admin = true WHERE id = 1;"
+```
+> **Note:** With admin, calling endpoint `/v1/admin/users/<user-id>/status?active=<true|false>` is possible **enable** or **disable** others users.
 
-
-
-<!-- ### Architecture Diagram
-
-![Architecture](./docs/img/architecture_diagram.png) -->
+Pre commit (*__For development__*)
+```bash
+pip intall pre-commit # install pre-commit with python pip
+go install golang.org/x/tools/cmd/goimports@latest # pre-commit hook
+go install github.com/golangci/golangci-lint/cmd/golangci-lint@v1.63.4 # pre-commit hook
+pre-commit install # install pre-commit hooks
+```

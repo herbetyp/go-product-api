@@ -20,7 +20,7 @@ services:
     volumes:
       - pgdata:/var/lib/postgresql/data
   go_product_api_cache:
-    container_name: product_api_go_cache
+    container_name: go_product_api_cache
     image: redis:7.4.2-alpine3.21
     restart: on-failure
     env_file:
