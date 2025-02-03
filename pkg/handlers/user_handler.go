@@ -3,14 +3,14 @@ package handlers
 import (
 	"github.com/herbetyp/go-product-api/internal/models"
 	userModel "github.com/herbetyp/go-product-api/internal/models/user"
-	service "github.com/herbetyp/go-product-api/pkg/services"
+	"github.com/herbetyp/go-product-api/pkg/services"
 	"github.com/herbetyp/go-product-api/utils"
 )
 
 func CreateUser(data models.UserDTO) (models.User, error) {
 	user := models.NewUser(data.Username, data.Email, data.Password)
 
-	user.Password, _ = service.HashPassword(user.Password)
+	user.Password, _ = services.HashPassword(user.Password)
 
 	u, err := userModel.Create(*user)
 	if err != nil {
@@ -18,43 +18,37 @@ func CreateUser(data models.UserDTO) (models.User, error) {
 	}
 
 	cacheKeys := []string{utils.USER_AUTHORIZATION_PREFIX + "all"}
-	service.DeleteCache(cacheKeys, false)
+	services.DeleteCache(cacheKeys, false)
 	return u, nil
 }
 
 func GetUser(id uint, tokenUUID string) (models.User, error) {
 	var user models.User
-	cacheKey := utils.USER_AUTHORIZATION_PREFIX + utils.UintToString(id)
 
-	cacheKeys := []string{cacheKey}
-	ommitInResponse := []string{"password", "is_admin"}
-	if service.GetCache(cacheKeys, &user, ommitInResponse) == "" {
+	cacheKey := utils.USER_AUTHORIZATION_PREFIX + utils.UintToString(id)
+	if services.GetCache(cacheKey, &user) == "" {
 		u, err := userModel.Get(id)
 		if err != nil {
 			return models.User{}, err
 		}
-		if u.ID == 0 {
-			cacheKey = utils.USER_AUTHORIZATION_PREFIX + "null"
+		if u.ID != 0 {
+			services.SetCache(cacheKey, &u)
+			user = u
 		}
-		service.SetCache(cacheKey, &u)
-		user = u
 	}
-
 	return user, nil
 }
 
 func GetUsers() ([]models.User, error) {
 	var users []models.User
-	cacheKey := utils.USER_AUTHORIZATION_PREFIX + "all"
 
-	cacheKeys := []string{cacheKey}
-	ommitInResponse := []string{}
-	if service.GetCache(cacheKeys, &users, ommitInResponse) == "" {
+	cacheKey := utils.USER_AUTHORIZATION_PREFIX + "all"
+	if services.GetCache(cacheKey, &users) == "" {
 		us, err := userModel.GetAll()
 		if err != nil {
 			return []models.User{}, err
 		}
-		service.SetCache(cacheKey, &us)
+		services.SetCache(cacheKey, &us)
 		users = us
 	}
 	return users, nil
@@ -63,7 +57,7 @@ func GetUsers() ([]models.User, error) {
 func UpdateUser(id uint, tokenUID string, data models.UserDTO) (models.User, error) {
 	user := models.NewUserWithID(id, data.Username, data.Password)
 
-	user.Password, _ = service.HashPassword(user.Password)
+	user.Password, _ = services.HashPassword(user.Password)
 	u, err := userModel.Update(*user)
 	if err != nil {
 		return models.User{}, err
@@ -73,7 +67,7 @@ func UpdateUser(id uint, tokenUID string, data models.UserDTO) (models.User, err
 		utils.USER_AUTHORIZATION_PREFIX + utils.UintToString(id),
 		utils.USER_AUTHORIZATION_PREFIX + "all",
 	}
-	service.DeleteCache(cacheKeys, false)
+	services.DeleteCache(cacheKeys, false)
 	return u, nil
 }
 
@@ -88,7 +82,7 @@ func DeleteUser(id uint, tokenUID string, hardDelete string) (bool, error) {
 		utils.USER_AUTHORIZATION_PREFIX + utils.UintToString(id),
 		utils.USER_AUTHORIZATION_PREFIX + "all",
 	}
-	service.DeleteCache(cacheKeys, false)
+	services.DeleteCache(cacheKeys, false)
 	return deleted, nil
 }
 
@@ -104,7 +98,7 @@ func RecoveryUser(id uint, tokenUID string) (models.User, error) {
 		utils.USER_AUTHORIZATION_PREFIX + utils.UintToString(id),
 		utils.USER_AUTHORIZATION_PREFIX + "all",
 	}
-	service.DeleteCache(cacheKeys, false)
+	services.DeleteCache(cacheKeys, false)
 	return u, nil
 }
 
@@ -119,6 +113,6 @@ func UpdateUserStatus(id uint, tokenUID string, active bool) (bool, error) {
 		utils.USER_AUTHORIZATION_PREFIX + utils.UintToString(id),
 		utils.USER_AUTHORIZATION_PREFIX + "all",
 	}
-	service.DeleteCache(cacheKeys, false)
+	services.DeleteCache(cacheKeys, false)
 	return updatedStatus, nil
 }

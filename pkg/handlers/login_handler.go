@@ -11,19 +11,17 @@ import (
 
 func NewLogin(data model.LoginDTO) (string, string, uint, error) {
 	var user models.User
-	cacheKey := utils.USER_AUTHENTICATION_PREFIX + data.Email
 
-	cacheKeys := []string{cacheKey}
-	if services.GetCache(cacheKeys, &user, []string{}) == "" {
+	cacheKey := utils.USER_AUTHENTICATION_PREFIX + data.Email
+	if services.GetCache(cacheKey, &user) == "" {
 		u, err := model.Get(data.Email)
 		if err != nil {
 			return "", "", 0, err
 		}
-		if u.ID == 0 {
-			cacheKey = utils.USER_AUTHENTICATION_PREFIX + "null"
+		if u.ID != 0 {
+			services.SetCache(cacheKey, &u)
+			user = u
 		}
-		services.SetCache(cacheKey, &u)
-		user = u
 	}
 
 	if !user.Active {

@@ -5,7 +5,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"log"
-	"strings"
 	"time"
 
 	config "github.com/herbetyp/go-product-api/configs"
@@ -49,21 +48,13 @@ func SetCache(key string, i interface{}) {
 	}
 }
 
-func GetCache(cacheKeys []string, i interface{}, ommitInResponse []string) string {
-	var cacheData string
-	var err error
-
-	for _, cacheKey := range cacheKeys {
-		cacheData, err = cache.Get(ctx, cacheKey).Result()
-		if err != nil {
-			logger.Error("Error deleting cache", err)
-		}
+func GetCache(cacheKey string, i interface{}) string {
+	cacheData, err := cache.Get(ctx, cacheKey).Result()
+	if err != nil {
+		logger.Error("Error deleting cache", err)
 	}
 
 	if cacheData != "" {
-		for _, field := range ommitInResponse {
-			cacheData = strings.Replace(cacheData, field, "", -1)
-		}
 		err = json.Unmarshal([]byte(cacheData), i)
 		if err != nil {
 			logger.Error("Error unmarshalling cache", err)
