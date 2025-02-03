@@ -23,9 +23,7 @@ func AdminMiddleware() gin.HandlerFunc {
 		var user models.User
 
 		cacheKey := utils.USER_AUTHORIZATION_PREFIX + sub
-		cacheKeys := []string{cacheKey}
-		ommitInResponse := []string{}
-		if services.GetCache(cacheKeys, &user, ommitInResponse) == "" {
+		if services.GetCache(cacheKey, &user) == "" {
 			u, err := userModel.Get(uintSub)
 			if err != nil {
 				log.Printf("error on get user in middleware: %s", err)

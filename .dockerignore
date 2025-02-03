@@ -9,3 +9,5 @@ pre-commit-config.*
 *.env
 Dokcerfile
 docker-compose.yml
+samples/
+LOCAL/
