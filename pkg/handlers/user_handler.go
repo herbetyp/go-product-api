@@ -24,11 +24,9 @@ func CreateUser(data models.UserDTO) (models.User, error) {
 
 func GetUser(id uint, tokenUUID string) (models.User, error) {
 	var user models.User
-	cacheKey := utils.USER_AUTHORIZATION_PREFIX + utils.UintToString(id)
 
-	cacheKeys := []string{cacheKey}
-	ommitInResponse := []string{"password", "is_admin"}
-	if service.GetCache(cacheKeys, &user, ommitInResponse) == "" {
+	cacheKey := utils.USER_AUTHORIZATION_PREFIX + utils.UintToString(id)
+	if service.GetCache(cacheKey, &user) == "" {
 		u, err := userModel.Get(id)
 		if err != nil {
 			return models.User{}, err
@@ -39,17 +37,14 @@ func GetUser(id uint, tokenUUID string) (models.User, error) {
 		service.SetCache(cacheKey, &u)
 		user = u
 	}
-
 	return user, nil
 }
 
 func GetUsers() ([]models.User, error) {
 	var users []models.User
-	cacheKey := utils.USER_AUTHORIZATION_PREFIX + "all"
 
-	cacheKeys := []string{cacheKey}
-	ommitInResponse := []string{}
-	if service.GetCache(cacheKeys, &users, ommitInResponse) == "" {
+	cacheKey := utils.USER_AUTHORIZATION_PREFIX + "all"
+	if service.GetCache(cacheKey, &users) == "" {
 		us, err := userModel.GetAll()
 		if err != nil {
 			return []models.User{}, err
