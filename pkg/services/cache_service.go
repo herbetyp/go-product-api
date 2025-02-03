@@ -49,23 +49,16 @@ func SetCache(key string, i interface{}) {
 }
 
 func GetCache(cacheKey string, i interface{}) string {
-	// var cacheData string
-	// var err error
-
-	// for _, cacheKey := range cacheKeys {
-	// 	cacheData, err = cache.Get(ctx, cacheKey).Result()
-
-	// }
-
-	// if cacheData != "" {
-	// 	err = json.Unmarshal([]byte(cacheData), i)
-	// 	if err != nil {
-	// 		logger.Error("Error unmarshalling cache", err)
-	// 	}
-	// }
 	cacheData, err := cache.Get(ctx, cacheKey).Result()
 	if err != nil {
 		logger.Error("Error deleting cache", err)
+	}
+
+	if cacheData != "" {
+		err = json.Unmarshal([]byte(cacheData), i)
+		if err != nil {
+			logger.Error("Error unmarshalling cache", err)
+		}
 	}
 	return cacheData
 }

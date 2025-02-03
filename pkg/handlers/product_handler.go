@@ -3,6 +3,8 @@ package handlers
 import (
 	"github.com/herbetyp/go-product-api/internal/models"
 	model "github.com/herbetyp/go-product-api/internal/models/product"
+	"github.com/herbetyp/go-product-api/pkg/services"
+	"github.com/herbetyp/go-product-api/utils"
 )
 
 func CreateProduct(dto model.ProductDTO) (models.Product, error) {
@@ -12,25 +14,44 @@ func CreateProduct(dto model.ProductDTO) (models.Product, error) {
 	if err != nil {
 		return models.Product{}, err
 	}
+	cacheKeys := []string{utils.PROD_AUTHORIZATION_PREFIX + "all"}
+	services.DeleteCache(cacheKeys, false)
 	return p, nil
 }
 
 func GetProduct(id uint) (models.Product, error) {
-	p, err := model.Get(id)
+	var prod models.Product
 
-	if err != nil {
-		return models.Product{}, err
+	cacheKey := utils.PROD_AUTHORIZATION_PREFIX + utils.UintToString(id)
+	if services.GetCache(cacheKey, &prod) == "" {
+		p, err := model.Get(id)
+		if err != nil {
+			return models.Product{}, err
+		}
+		if p.ID != 0 {
+			services.SetCache(cacheKey, &p)
+			prod = p
+		}
+
 	}
-	return p, nil
+	return prod, nil
 }
 
 func GetProducts() ([]models.Product, error) {
-	ps, err := model.GetAll()
+	var prods []models.Product
 
-	if err != nil {
-		return []models.Product{}, err
+	cacheKey := utils.PROD_AUTHORIZATION_PREFIX + "all"
+	if services.GetCache(cacheKey, &prods) == "" {
+		ps, err := model.GetAll()
+		if err != nil {
+			return []models.Product{}, err
+		}
+		if len(ps) > 0 {
+			services.SetCache(cacheKey, &ps)
+			prods = ps
+		}
 	}
-	return ps, nil
+	return prods, nil
 }
 
 func UpdateProduct(id uint, dto model.ProductDTO) (models.Product, error) {
@@ -40,6 +61,11 @@ func UpdateProduct(id uint, dto model.ProductDTO) (models.Product, error) {
 	if err != nil {
 		return models.Product{}, err
 	}
+	cacheKeys := []string{
+		utils.PROD_AUTHORIZATION_PREFIX + utils.UintToString(id),
+		utils.PROD_AUTHORIZATION_PREFIX + "all",
+	}
+	services.DeleteCache(cacheKeys, false)
 	return p, nil
 }
 
@@ -49,6 +75,11 @@ func DeleteProduct(id uint, hardDelete string) (bool, error) {
 	if err != nil {
 		return deleted, err
 	}
+	cacheKeys := []string{
+		utils.PROD_AUTHORIZATION_PREFIX + utils.UintToString(id),
+		utils.PROD_AUTHORIZATION_PREFIX + "all",
+	}
+	services.DeleteCache(cacheKeys, false)
 	return deleted, nil
 }
 
@@ -59,5 +90,10 @@ func RecoveryProduct(id uint) (models.Product, error) {
 	if err != nil {
 		return models.Product{}, err
 	}
+	cacheKeys := []string{
+		utils.PROD_AUTHORIZATION_PREFIX + utils.UintToString(id),
+		utils.PROD_AUTHORIZATION_PREFIX + "all",
+	}
+	services.DeleteCache(cacheKeys, false)
 	return p, nil
 }
