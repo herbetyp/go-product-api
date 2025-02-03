@@ -1,0 +1,21 @@
+#!/bin/env bash
+export GIN_MODE=debug
+export API_PORT=5000
+export API_RATE_LIMIT=5
+export API_RATE_LIMIT_BURST=10
+
+export DB_HOST=localhost
+export DB_PORT=5432
+export DB_USER=myuserdb
+export DB_PASSWORD=mypasswordb
+export DB_NAME=postgres
+
+export JWT_SECRET_KEY=S3cretK3y
+export JWT_EXPIRATION_IN=3600
+export JWT_VERSION=1
+
+export CACHE_ADDR=default:mypasswordcache@localhost
+export CACHE_PORT=6379
+export CACHE_EXPIRATION_IN=1800
+
+export DB_CONTAINER_NAME=go_product_api_db
