@@ -65,20 +65,20 @@ pre-commit install # install pre-commit hooks
 
 | `Feature` |  `User` | `Admin` |
 | --- | :---: | :---: |
-| **OAuth Basic** Authentication Endpoint | [x] | [x] |
-| Authorization from **JWT Bearer Token** | [x] | [x] |
-| **Create User** | [x] | [x] |
-| **Get User** | [x] | [x] |
-| **Update User** (*_username, password_*) | [x] | [x] |
-| **List Users** | [ ] | [x] |
-| **Delete User** (*_soft delete, hard delete_*) | [ ] | [x] |
-| **Recovery User** | [ ] | [x] |
-| **Active/Deactive User** | [ ] | [x] |
-| **Create Product** | [x] | [x] |
-| **Get Product** | [x] | [x] |
-| **List Products** | [x] | [x] |
-| **Update Product** | [x] | [x] |
-| **Delete Product** (*_soft delete, hard delete_*) | [ ] | [x] |
+| **OAuth Basic** Authentication Endpoint | :white_check_mark: | :white_check_mark: |
+| Authorization from **JWT Bearer Token** | :white_check_mark: | :white_check_mark: |
+| **Create User** | :white_check_mark: | :white_check_mark: |
+| **Get User** | :white_check_mark: | :white_check_mark: |
+| **Update User** (*_username, password_*) | :white_check_mark: | :white_check_mark: |
+| **List Users** | :x: | :white_check_mark: |
+| **Delete User** (*_soft delete, hard delete_*) | :x: | :white_check_mark: |
+| **Recovery User** | :x: | :white_check_mark: |
+| **Active/Deactive User** | :x: | :white_check_mark: |
+| **Create Product** | :white_check_mark: | :white_check_mark: |
+| **Get Product** | :white_check_mark: | :white_check_mark: |
+| **List Products** | :white_check_mark: | :white_check_mark: |
+| **Update Product** | :white_check_mark: | :white_check_mark: |
+| **Delete Product** (*_soft delete, hard delete_*) | :x: | :white_check_mark: |
 
 ### Application systems
 - [x] **JSON format output log** system
