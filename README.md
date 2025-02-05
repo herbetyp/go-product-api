@@ -7,7 +7,7 @@
 ![Redis](https://img.shields.io/badge/redis-%23DD0031.svg?style=for-the-badge&logo=redis&logoColor=white)
 <!-- ![Nginx](https://img.shields.io/badge/nginx-%23009639.svg?style=for-the-badge&logo=nginx&logoColor=white) -->
 
-> API for product inventory management, with user and admin user permission system, also with authentication and authorization.
+> API for product management, with user system, authentication and authorization.
 
 
 ## Run localy application:
@@ -17,9 +17,9 @@
 cp -r docs/samples/*.sample $PWD; for i in *.sample ; do mv "$i" "$(basename "$i" .sample)" ; done && source envs.sh
 ```
 > [!NOTE]
-> When restarting the terminal session, the `source envs.sh` command must be executed again.
+> When you restart the terminal session, you will need to run the `source envs.sh` command again.
 
-2) #### Run app in Docker container (with docker compose module) or run direct from terminal
+2) #### Run application in Docker container (with Docker Composer module) or directly from terminal
 ```bash
 # using docker container, running on http://localhost:3000
 docker compose up -d
@@ -44,8 +44,7 @@ curl --request POST \
 ```
 
 > [!IMPORTANT]
-> Of default, as users is created with `active` and `is_admin` as `false`, execute the following command to active the admin user and unlocked system, **after crated first user using the endpoint**:
-Now, enable and set first user with admin:
+> By default, users are created with `active` set to `false`, run the following command to make the `admin` user active and the system unlock:
 
 ```bash
 docker exec -ti $DB_CONTAINER_NAME psql -U $DB_USER \
@@ -81,10 +80,10 @@ pre-commit install # install pre-commit hooks
 | **Delete Product** (*_soft delete, hard delete_*) | :x: | :white_check_mark: |
 
 ### Application systems
-- [x] **JSON format output log** system
-- [x] **Memory Cache** system
-- [x] **Rate limit** system
-- [x] Auto **Migrations** system
+- [x] **JSON format output log**
+- [x] **Memory in cache (Redis)**
+- [x] **Rate limiting by IP**
+- [x] **Database auto migrations**
 <!-- - [ ] **NGnix** proxy System -->
 
 ### Developed with:
