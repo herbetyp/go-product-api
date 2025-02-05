@@ -52,16 +52,6 @@ docker exec -ti $DB_CONTAINER_NAME psql -U $DB_USER \
 -d $DB_NAME -c "UPDATE public.users SET active = true, is_admin = true WHERE id = 1;"
 ```
 
-<!-- #### Enable or disable user:
-> [!NOTE]
-> With admin, calling endpoint `/v1/admin/users/<user-id>/status?active=<true|false>` is possible **enable** or **disable** others users.
-
-```bash
-curl --request PATCH \
-  --url 'https://go-product-api.onrender.com/v1/admin/users/<user-id>/status?active=true' \
-  --header 'Authorization: Bearer <JWT TOKEN>'
-``` -->
-
 ---
 - Pre commit (*__For development only__*)
 ```bash
@@ -73,33 +63,31 @@ pre-commit install # install pre-commit hooks
 
 ## API Features:
 
-> Auth
-- [x] OAuth Authentication Endpoint (*_grant_type=client_credentials_*)
-- [x] Authorization from **JWT Bearer Token**
-> **All Users**
-- [x] Create User
-- [x] Get User
-- [x] Update User (*_username, password_*)
-> **Admin Only**
-- [x] List Users
-- [x] Delete User (*_soft delete, hard delete_*)
-- [x] Recovery User
-- [x] Active/Deactive User
-- [x] Delete Product (*_soft delete_*, *_hard delete_*)
-- [x] Recovery Product
-> **All Users** Products
-- [x] Create Product
-- [x] Get Product
-- [x] List Products
-- [x] Update Product
-> **Application systems**
-- [x] **JSON format log** system
-- [x] **Cache** system
+| `Feature` |  `User` | `Admin` |
+| --- | :---: | :---: |
+| **OAuth Basic** Authentication Endpoint | :white_check_mark: | :white_check_mark: |
+| Authorization from **JWT Bearer Token** | :white_check_mark: | :white_check_mark: |
+| **Create User** | :white_check_mark: | :white_check_mark: |
+| **Get User** | :white_check_mark: | :white_check_mark: |
+| **Update User** (*_username, password_*) | :white_check_mark: | :white_check_mark: |
+| **List Users** | :x: | :white_check_mark: |
+| **Delete User** (*_soft delete, hard delete_*) | :x: | :white_check_mark: |
+| **Recovery User** | :x: | :white_check_mark: |
+| **Active/Deactive User** | :x: | :white_check_mark: |
+| **Create Product** | :white_check_mark: | :white_check_mark: |
+| **Get Product** | :white_check_mark: | :white_check_mark: |
+| **List Products** | :white_check_mark: | :white_check_mark: |
+| **Update Product** | :white_check_mark: | :white_check_mark: |
+| **Delete Product** (*_soft delete, hard delete_*) | :x: | :white_check_mark: |
+
+### Application systems
+- [x] **JSON format output log** system
+- [x] **Memory Cache** system
 - [x] **Rate limit** system
 - [x] Auto **Migrations** system
 <!-- - [ ] **NGnix** proxy System -->
 
-## Developed with:
+### Developed with:
 - [Golang](https://go.dev/)
 - [PostgreSQL](https://www.postgresql.org/)
 - [Docker](https://www.docker.com/)
