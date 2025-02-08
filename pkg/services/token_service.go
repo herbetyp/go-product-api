@@ -7,6 +7,7 @@ import (
 
 	"github.com/golang-jwt/jwt/v5"
 	config "github.com/herbetyp/go-product-api/configs"
+	"github.com/herbetyp/go-product-api/internal/helpers"
 	"github.com/herbetyp/go-product-api/utils"
 )
 
@@ -14,7 +15,7 @@ func GenerateToken(id uint) (string, string, uint, error) {
 	JWTConf := config.GetConfig().JWT
 	jti := utils.NewUUID()
 
-	token := jwt.NewWithClaims(jwt.SigningMethodHS512, jwt.MapClaims{
+	token := jwt.NewWithClaims(jwt.SigningMethodRS256, jwt.MapClaims{
 		"sub":     fmt.Sprint(id),
 		"iss":     "auth-product-api",
 		"aud":     "api://go-product-api",
@@ -24,7 +25,7 @@ func GenerateToken(id uint) (string, string, uint, error) {
 		"version": JWTConf.Version,
 	})
 
-	t, err := token.SignedString([]byte(JWTConf.SecretKey))
+	t, err := token.SignedString(helpers.GetPrivateKey())
 	if err != nil {
 		log.Printf("error generating token: %s", err)
 		return "", "", 0, err
@@ -34,14 +35,11 @@ func GenerateToken(id uint) (string, string, uint, error) {
 }
 
 func ValidateToken(token string) (bool, jwt.MapClaims, error) {
-	conf := config.GetConfig()
-
-	// Validate token signature
 	tokenDecoded, err := jwt.Parse(token, func(t *jwt.Token) (interface{}, error) {
-		if _, isValid := t.Method.(*jwt.SigningMethodHMAC); !isValid {
-			return false, nil
+		if _, isValid := t.Method.(*jwt.SigningMethodRSA); !isValid {
+			return nil, fmt.Errorf("invalid token signing method")
 		}
-		return []byte(conf.JWT.SecretKey), nil
+		return helpers.GetPrivateKey().Public(), nil
 	})
 
 	if err != nil {
@@ -52,17 +50,6 @@ func ValidateToken(token string) (bool, jwt.MapClaims, error) {
 	claims, err := utils.GetJwtClaims(tokenDecoded.Raw)
 	if err != nil {
 		log.Printf("not get claim: %s", err)
-	}
-
-	// Validate expiration
-	if exp, ok := claims["exp"].(float64); ok {
-		if int64(exp) < time.Now().Unix() {
-			log.Print("expired token")
-			return false, jwt.MapClaims{}, fmt.Errorf("expired token")
-		}
-	} else {
-		log.Print("missing exp claim")
-		return false, jwt.MapClaims{}, fmt.Errorf("missing exp claim")
 	}
 
 	// Validate default claims

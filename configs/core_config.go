@@ -40,7 +40,6 @@ type CacheConfig struct {
 }
 
 type JWTConfig struct {
-	SecretKey string
 	ExpiresIn time.Duration
 	Version   string
 }
@@ -78,7 +77,6 @@ func InitConfig() {
 			ExpiresIn: time.Duration(CacheExpiresIn),
 		},
 		JWT: JWTConfig{
-			SecretKey: os.Getenv("JWT_SECRET_KEY"),
 			ExpiresIn: time.Duration(JWTExpiresIn),
 			Version:   os.Getenv("JWT_VERSION"),
 		},
