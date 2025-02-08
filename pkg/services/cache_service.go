@@ -50,8 +50,8 @@ func SetCache(key string, i interface{}) {
 
 func GetCache(cacheKey string, i interface{}) string {
 	cacheData, err := cache.Get(ctx, cacheKey).Result()
-	if err != nil {
-		logger.Error("Error deleting cache", err)
+	if err != nil && err != redis.Nil {
+		logger.Error("Error getting cache", err)
 	}
 
 	if cacheData != "" {
@@ -66,14 +66,14 @@ func GetCache(cacheKey string, i interface{}) string {
 func DeleteCache(cacheKeys []string, flushall bool) {
 	for _, cacheKey := range cacheKeys {
 		err := cache.Del(ctx, cacheKey).Err()
-		if err != nil {
+		if err != nil && err != redis.Nil {
 			logger.Error("Error deleting cache", err)
 		}
 	}
 
 	if flushall {
 		err := cache.FlushAll(ctx).Err()
-		if err != nil {
+		if err != nil && err != redis.Nil {
 			logger.Error("Error flushing cache", err)
 		}
 	}
