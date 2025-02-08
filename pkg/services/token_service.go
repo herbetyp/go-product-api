@@ -8,11 +8,12 @@ import (
 	"github.com/golang-jwt/jwt/v5"
 	config "github.com/herbetyp/go-product-api/configs"
 	"github.com/herbetyp/go-product-api/internal/helpers"
+	"github.com/herbetyp/go-product-api/utils"
 )
 
 func GenerateToken(id uint) (string, string, uint, error) {
 	JWTConf := config.GetConfig().JWT
-	jti := helpers.NewUUID()
+	jti := utils.NewUUID()
 
 	token := jwt.NewWithClaims(jwt.SigningMethodRS256, jwt.MapClaims{
 		"sub":     fmt.Sprint(id),
@@ -46,7 +47,7 @@ func ValidateToken(token string) (bool, jwt.MapClaims, error) {
 		return false, jwt.MapClaims{}, err
 	}
 
-	claims, err := helpers.GetJwtClaims(tokenDecoded.Raw)
+	claims, err := utils.GetJwtClaims(tokenDecoded.Raw)
 	if err != nil {
 		log.Printf("not get claim: %s", err)
 	}
