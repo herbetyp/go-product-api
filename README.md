@@ -19,7 +19,12 @@ cp -r docs/samples/*.sample $PWD; for i in *.sample ; do mv "$i" "$(basename "$i
 > [!NOTE]
 > When you restart the terminal session, you will need to run the `source envs.sh` command again.
 
-2) #### Run application in Docker container (with Docker Composer module) or directly from terminal
+2) Genereta RSA private key for assign JWT token
+```bash
+openssl genpkey -out rsa_pvkey.pem -algorithm RSA -pkeyopt rsa_keygen_bits:2048
+```
+
+3) #### Run application in Docker container (with Docker Composer module) or directly from terminal
 ```bash
 # using docker container, running on http://localhost:3000
 docker compose up -d
@@ -31,7 +36,7 @@ docker compose up -d go_product_api_db go_product_api_cache
 go run cmd/main.go
 ```
 
-3) #### Create user:
+4) #### Create user:
 ```bash
 curl --request POST \
   --url https://go-product-api.onrender.com/v1/users \
