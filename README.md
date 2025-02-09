@@ -37,7 +37,7 @@ docker compose up -d go_product_api_db go_product_api_cache
 go run cmd/main.go
 ```
 
-4) #### Create user
+4) #### Create user:
 ```bash
 curl --request POST \
   --url https://go-product-api.onrender.com/v1/users \
