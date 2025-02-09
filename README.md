@@ -1,16 +1,17 @@
+<div align="center">
 
-
-# Go Product API
+# Go Product API :globe_with_meridians:
 ![Go](https://img.shields.io/badge/go-%2300ADD8.svg?style=for-the-badge&logo=go&logoColor=white)
 ![Postgres](https://img.shields.io/badge/postgres-%23316192.svg?style=for-the-badge&logo=postgresql&logoColor=white)
 ![Docker](https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=white)
 ![Redis](https://img.shields.io/badge/redis-%23DD0031.svg?style=for-the-badge&logo=redis&logoColor=white)
 <!-- ![Nginx](https://img.shields.io/badge/nginx-%23009639.svg?style=for-the-badge&logo=nginx&logoColor=white) -->
 
-> API for product management, with user system, authentication and authorization.
+API for product management, with user system, authentication and authorization.
 
+</div>
 
-## Run localy application:
+## :wrench: Run localy application:
 
 1) #### Copy and export variables (*__Run in root project__*)
 ```bash
@@ -19,7 +20,12 @@ cp -r docs/samples/*.sample $PWD; for i in *.sample ; do mv "$i" "$(basename "$i
 > [!NOTE]
 > When you restart the terminal session, you will need to run the `source envs.sh` command again.
 
-2) #### Run application in Docker container (with Docker Composer module) or directly from terminal
+2) Genereta RSA private key for assign JWT token
+```bash
+openssl genpkey -out rsa_pvkey.pem -algorithm RSA -pkeyopt rsa_keygen_bits:2048
+```
+
+3) #### Run application in Docker container (with Docker Composer module) or directly from terminal
 ```bash
 # using docker container, running on http://localhost:3000
 docker compose up -d
@@ -31,7 +37,7 @@ docker compose up -d go_product_api_db go_product_api_cache
 go run cmd/main.go
 ```
 
-3) #### Create user:
+4) #### Create user
 ```bash
 curl --request POST \
   --url https://go-product-api.onrender.com/v1/users \
@@ -60,7 +66,7 @@ go install github.com/golangci/golangci-lint/cmd/golangci-lint@v1.63.4 # pre-com
 pre-commit install # install pre-commit hooks
 ```
 
-## API Features:
+## :dart: API Features:
 
 | `Feature` |  `User` | `Admin` |
 | --- | :---: | :---: |
@@ -79,14 +85,14 @@ pre-commit install # install pre-commit hooks
 | **Update Product** | :white_check_mark: | :white_check_mark: |
 | **Delete Product** (*_soft delete, hard delete_*) | :x: | :white_check_mark: |
 
-### Application systems
+### ⚙️ Application systems
 - [x] **JSON format output log**
 - [x] **Memory in cache (Redis)**
 - [x] **Rate limiting by IP**
 - [x] **Database auto migrations**
 <!-- - [ ] **NGnix** proxy System -->
 
-### Developed with:
+### :space_invader: Developed with:
 - [Golang](https://go.dev/)
 - [PostgreSQL](https://www.postgresql.org/)
 - [Docker](https://www.docker.com/)
